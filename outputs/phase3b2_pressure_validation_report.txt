@@ -1,0 +1,109 @@
+================================================================================
+CRICKET PRESSURE INDEX — PHASE 3B.2 PRESSURE VALIDATION AUDIT REPORT
+================================================================================
+Generated: 2026-11-11 05:35:01 UTC
+Output Deliveries: data/processed/pressure_deliveries.csv
+Output Player-Match: data/processed/player_match_pressure.csv
+================================================================================
+
+1. DATASET INTEGRITY & ROW COUNTS
+--------------------------------------------------------------------------------
+  • Input Engineered Deliveries : 194,014
+  • Output Pressure Deliveries   : 194,014
+  • Total Delivery Features      : 81 columns
+  • Player-Match Observations    : 5,668 records
+    - Batter-Match Observations  : 2,996
+    - Bowler-Match Observations  : 2,672
+
+2. UNIQUENESS CHECKS
+--------------------------------------------------------------------------------
+  • Delivery Key Duplicates (match_id, inn, over, ball) : 0 (100% Unique)
+  • Player-Match-Role Duplicates (player, match, role)  : 0 (100% Unique)
+
+3. PRESSURE DELIVERY COUNTS & PROPORTIONS
+--------------------------------------------------------------------------------
+  • High Pressure Match Deliveries (PI >= 0.65)  : 20,121 (10.37%)
+  • Batter Pressure Deliveries (Faced & High PI) : 19,180 (10.28% of balls faced)
+  • Bowler Legal Pressure Balls (Legal & High PI): 19,062 (10.26% of legal balls)
+  • Bowler Total Pressure Deliveries (All balls) : 20,121
+
+4. PRESSURE TIER DISTRIBUTION
+--------------------------------------------------------------------------------
+  • Low       : 125,289 deliveries (64.58%)
+  • Medium    : 48,604 deliveries (25.05%)
+  • High      : 20,121 deliveries (10.37%)
+
+5. PRESSURE COUNTS BY FORMAT
+--------------------------------------------------------------------------------
+  • Match State Pressure:
+    - IPL  : Total=87,687, High Pressure=8,630 ( 9.84%)
+    - T20I : Total=106,327, High Pressure=11,491 (10.81%)
+
+  • Batter Pressure by Format (Balls Faced):
+    - IPL  : Total Faced=84,135, Batter Pressure=8,162 ( 9.70%)
+    - T20I : Total Faced=102,405, Batter Pressure=11,018 (10.76%)
+
+  • Bowler Pressure by Format (Legal Balls):
+    - IPL  : Total Legal=83,755, Bowler Pressure=8,103 ( 9.67%)
+    - T20I : Total Legal=101,960, Bowler Pressure=10,959 (10.75%)
+
+6. PRESSURE COUNTS BY INNINGS (FIRST INNINGS VS CHASE)
+--------------------------------------------------------------------------------
+  • Innings 1 [1st Innings (Setting) ]: Total=102,054, Pressure=7,124 (  6.98%)
+  • Innings 2 [2nd Innings (Chase)   ]: Total=91,934, Pressure=12,971 ( 14.11%)
+  • Innings 3 [Super Over (Inn 3)    ]: Total=    19, Pressure=   19 (100.00%)
+  • Innings 4 [Super Over (Inn 4)    ]: Total=     7, Pressure=    7 (100.00%)
+
+7. DLS & SUPER OVER BREAKDOWN
+--------------------------------------------------------------------------------
+  • Super Over Deliveries Count : 26 (100% High Pressure; PI = 1.00)
+  • Super Over Matches          : 4 matches
+  • DLS Matches Deliveries      : 5,254
+  • DLS Deliveries under Pressure: 508 ( 9.67%)
+
+8. CONFIDENCE DISTRIBUTION ACROSS PRESSURE DELIVERIES
+--------------------------------------------------------------------------------
+  • Match-Margin Confidence under Pressure:
+    - HIGH           : 14,600 deliveries (72.56%)
+    - MEDIUM         : 4,320 deliveries (21.47%)
+    - LOW            : 1,079 deliveries ( 5.36%)
+    - NOT_APPLICABLE :   122 deliveries ( 0.61%)
+
+  • Delivery Score Confidence under Pressure:
+    - HIGH           : 14,601 deliveries (72.57%)
+    - MEDIUM         : 4,319 deliveries (21.47%)
+    - LOW            : 1,079 deliveries ( 5.36%)
+    - NOT_APPLICABLE :   122 deliveries ( 0.61%)
+
+9. PLAYER-MATCH ELIGIBILITY AUDIT (PHASE 3A CRITERIA)
+--------------------------------------------------------------------------------
+  • Total Batter-Match Pressure Records  : 2,996
+    - Eligible for PSR (>=3 balls or out): 2,486 (82.98%)
+    - Ineligible cameos (<3 balls & not out): 510 (17.02%)
+  • Unique Batters Facing Pressure       : 598
+
+  • Total Bowler-Match Pressure Records  : 2,672
+    - Eligible for PSR (>=6 legal balls) : 1,943 (72.72%)
+    - Ineligible spells (<6 legal balls) : 729 (27.28%)
+  • Unique Bowlers Bowling under Pressure: 409
+
+10. DATA LEAKAGE & PRE-DELIVERY TEMPORAL INTEGRITY
+--------------------------------------------------------------------------------
+  • Pre-Delivery Input Verification: PASSED
+    - All chase equations evaluate RRR_pre, W_lost_pre, and B_rem_pre strictly at t-1.
+    - Delivery outcome runs, extras, and wickets have 0.00 mathematical influence on PI_t.
+  • Max pressure_index across all deliveries : 1.0000 (Must be <= 1.00)
+  • Min pressure_index across all deliveries : 0.0073 (Must be >= 0.00)
+  • Null pressure_index count               : 0 (Must be 0)
+
+11. SAMPLE PRESSURE RECORDS FOR MANUAL AUDIT
+--------------------------------------------------------------------------------
+  • Match 13511 | Inn 1 | Over 3.3 | Striker: James Vince        | Bowler: Sheldon Cottrell   | PI: 0.6639 | RRR_pre: nan | W_lost_pre: 3 | B_rem_pre: 106
+  • Match 13511 | Inn 1 | Over 3.4 | Striker: James Vince        | Bowler: Sheldon Cottrell   | PI: 0.6700 | RRR_pre: nan | W_lost_pre: 3 | B_rem_pre: 105
+  • Match 13511 | Inn 1 | Over 3.5 | Striker: James Vince        | Bowler: Sheldon Cottrell   | PI: 0.6700 | RRR_pre: nan | W_lost_pre: 3 | B_rem_pre: 104
+  • Match 13511 | Inn 1 | Over 3.6 | Striker: James Vince        | Bowler: Sheldon Cottrell   | PI: 0.6700 | RRR_pre: nan | W_lost_pre: 3 | B_rem_pre: 103
+  • Match 13511 | Inn 1 | Over 6.2 | Striker: Eoin Morgan        | Bowler: Jason Holder       | PI: 0.6515 | RRR_pre: nan | W_lost_pre: 4 | B_rem_pre: 89
+
+================================================================================
+PHASE 3B.2 PRESSURE IDENTIFICATION AUDIT COMPLETE — ALL METRICS SATISFIED
+================================================================================

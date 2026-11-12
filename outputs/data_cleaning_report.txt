@@ -1,0 +1,87 @@
+================================================================================
+CRICKET PRESSURE INDEX — PHASE 2 DATA CLEANING & MASTER DATASET REPORT
+Execution Timestamp: 2026-11-10 23:00:06
+================================================================================
+
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+Phase 2 data cleaning successfully transformed raw historical records into standardized,
+schema-validated master tables in 'data/processed/'.
+Overall Validation Suite Result: ALL CHECKS PASSED (0 ERRORS)
+
+2. MASTER DATASET SUMMARY
+--------------------------------------------------------------------------------
+  • clean_competitions.csv :     139 rows x 6 cols
+  • clean_teams.csv        :     337 rows x 3 cols
+  • clean_matches.csv      :     853 rows x 31 cols
+  • clean_playing_eleven.csv:  27,353 rows x 11 cols
+  • clean_ball_by_ball.csv : 194,014 rows x 43 cols
+
+3. COMPETITION FILTERING RESULTS
+--------------------------------------------------------------------------------
+Target Scope: Indian Premier League (IPL) and Senior Men's T20 Internationals (2022 onwards).
+  • IPL Competitions Retained : 5 (IPL 2022, 2023, 2024, 2025, 2026)
+  • T20I Competitions Retained: 134 series & tournaments
+  • Excluded Developmental Tournaments (30 matches total):
+    - comp_id 2670: Mens T20 Emerging Teams Asia Cup 2024 (15 matches)
+    - comp_id 3289: Asia Cup Rising Stars 2025 (15 matches)
+
+4. EXTRAS & RUNS RECONSTRUCTION
+--------------------------------------------------------------------------------
+  • 'extras1_runs' was strictly treated as an internal categorical category code (1-7), NOT numerical runs.
+  • Total delivery runs were derived using standard cricket regulations:
+    delivery_total_runs = batter_runs + (1 on wide/noball/other) + (1 on bye/legbye) + extras_2_runs
+  • Score Reconstruction Confidence Breakdown across 853 target matches:
+    - HIGH           :  648 matches ( 76.0%)
+    - MEDIUM         :  134 matches ( 15.7%)
+    - NOT_APPLICABLE :   41 matches (  4.8%)
+    - LOW            :   30 matches (  3.5%)
+
+5. DISMISSAL NORMALIZATION & WICKET PARTITIONING
+--------------------------------------------------------------------------------
+  • Total Valid Wickets (is_valid_wicket == True): 10,486
+  • Bowler-Credited Wickets (Caught, Bowled, LBW, Stumped, Hit Wicket): 9,905 (94.46%)
+  • Non-Bowler Dismissals (Run Out, Retired Out, Obstructing the Field): 581 (5.54%)
+  • Normalizations applied:
+    - 'RunOut' -> 'Run Out'
+    - 'Stump' -> 'Stumped'
+    - 'Retire Out' -> 'Retired Out'
+    - 'Obstracting the field' & 'Obstructing the field' -> 'Obstructing the Field'
+  • Resolved Discrepancies:
+    - 12 deliveries with is_wicket=False but non-null dismissed_player_id nulled out.
+    - Row 127899 (Match 40709, Tilak Varma Retired Out) dismissed_player_id set to 7897.
+
+6. PLAYING XI CLEANING & SUPER OVER DEDUPLICATION
+--------------------------------------------------------------------------------
+  • Root Cause of Duplicate (match_id, player_id) Pairs:
+    Identified in exactly 3 Super Over matches (13613, 21176, 28962).
+    Data provider recorded both main-innings batting orders and Super Over batting orders.
+  • Resolution:
+    Matched player records against main match (innings 1 & 2) batting orders from ball_by_ball.
+    All 22 active participants per match were retained without row multiplication.
+  • Clean Playing XI composite key (match_id, player_id) is now 100% strictly unique.
+
+7. DLS & INNINGS LENGTH SPECIFICATION
+--------------------------------------------------------------------------------
+  • DLS / Rain-Interrupted Matches Identified: 38
+  • Confirmed: 'first_inn_revised_overs' and 'second_inn_revised_overs' record TOTAL LEGAL BALLS.
+  • Created validated fields:
+    - 'inn1_allocated_balls' & 'inn2_allocated_balls'
+    - 'inn1_allocated_overs' & 'inn2_allocated_overs'
+    - 'target_runs' preserved from revised_target or calculated as inn1_total + 1
+    - 'legal_balls_remaining' tracked dynamically on every delivery.
+
+8. INTEGRITY VALIDATION CHECKLIST
+--------------------------------------------------------------------------------
+  [PASS] Check 1: Competition Scope Enforcement          | IPL seasons: 5, T20I comps: 134, Excluded dev comps: 2
+  [PASS] Check 2: Match ID Foreign Key Integrity         | Playing XI matches valid: True, Ball-by-ball matches valid: True
+  [PASS] Check 3: Delivery Primary Key Uniqueness        | Duplicate deliveries found: 0
+  [PASS] Check 4: Playing XI (match_id, player_id) Uniqueness | Duplicate player entries found: 0
+  [PASS] Check 5: Active Player Participation Integrity  | Active strikers/bowlers missing from clean playing XI: 0
+  [PASS] Check 6: Runs & Wickets Logical Consistency     | Total delivery runs >= batter runs: True, Valid wickets partition: True
+  [PASS] Check 7: Delivery Record Count Preservation     | Cleaned ball_by_ball rows: 194,014 (Expected: 194,014)
+
+================================================================================
+PHASE 2 MASTER CLEANING STATUS: COMPLETED SUCCESSFULLY (0 ERRORS)
+Original CSV datasets in data/raw/ remain 100% untouched and preserved.
+================================================================================

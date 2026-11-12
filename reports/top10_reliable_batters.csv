@@ -1,0 +1,11 @@
+rank,player_id,player_name,country_or_team,competitions_coverage,pressure_exposure_balls,qualifying_matches,successful_matches,raw_psr,exposure_weighted_psr,shrunk_exposure_weighted_psr,volatility_penalty_kappa,final_composite_score,baseline_strike_rate,pressure_strike_rate,delta_strike_rate,pressure_cumulative_dva,pressure_dva_per_ball,rank_k25,rank_k50,rank_k75,rank_k100,min_grid_rank,max_grid_rank,rank_shift,remains_top10_all_k
+1,4708,Rinku Singh,"India, Kolkata Knight Riders","18 Comps (T20, T20I)",199,15,9,0.6,0.7929,0.7203,0.7503,0.5405,144.94,194.97,50.04,68.7288,0.3454,2,1,1,1,1,2,1,True
+2,1699,Suryakumar Yadav,"India, Mumbai Indians","26 Comps (T20, T20I)",85,10,6,0.6,0.8519,0.6962,0.7534,0.5245,165.47,196.47,31.0,31.3642,0.369,1,2,3,5,1,5,4,True
+3,6725,Sherfane Rutherford,"Gujarat Titans, Kolkata Knight Riders, Mumbai Indians, Royal Challengers Bengaluru, West Indies","18 Comps (T20, T20I)",114,11,7,0.6364,0.8158,0.6987,0.7506,0.5244,141.05,201.75,60.7,42.5678,0.3734,3,3,2,3,2,3,1,True
+4,7260,Dhruv Jurel,"India, Rajasthan Royals","7 Comps (T20, T20I)",94,8,5,0.625,0.809,0.6779,0.7551,0.5119,144.89,198.94,54.05,30.1536,0.3208,4,4,6,6,4,6,2,True
+5,6396,Tim David,"Australia, Mumbai Indians, Royal Challengers Bengaluru","20 Comps (T20, T20I)",249,24,16,0.6667,0.7247,0.6757,0.7507,0.5072,173.08,195.58,22.5,83.0666,0.3336,9,5,4,2,2,9,7,True
+6,7897,Namboori Tilak Varma,"India, Mumbai Indians","24 Comps (T20, T20I)",181,17,12,0.7059,0.7389,0.6724,0.7519,0.5056,139.11,202.76,63.65,86.3584,0.4771,8,6,5,4,4,8,4,True
+7,37052,Naman Dhir,"India, Mumbai Indians","5 Comps (T20, T20I)",103,10,6,0.6,0.7864,0.6704,0.7505,0.5032,163.35,206.8,43.45,46.7898,0.4543,6,7,7,7,6,7,1,True
+8,8221,Nitish Reddy,"India, Sunrisers Hyderabad","10 Comps (T20, T20I)",65,7,4,0.5714,0.8462,0.6659,0.7517,0.5006,146.29,189.23,42.94,24.1486,0.3715,5,8,8,8,5,8,3,True
+9,4106,Daryl Mitchell,"Chennai Super Kings, New Zealand, Rajasthan Royals","19 Comps (T20, T20I)",54,7,4,0.5714,0.8148,0.6306,0.7695,0.4852,144.34,159.26,14.92,4.9956,0.0925,7,9,10,13,7,13,6,False
+10,4773,Jaker Ali Anik,Bangladesh,13 Comps (T20I),98,7,5,0.7143,0.7526,0.6441,0.7503,0.4833,117.63,182.65,65.02,31.4986,0.3214,11,10,9,9,9,11,2,False

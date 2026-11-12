@@ -1,0 +1,205 @@
+================================================================================
+CRICKET PRESSURE INDEX — PHASE 3C DVA ENGINE VALIDATION AUDIT REPORT
+================================================================================
+Generated: 2026-11-11 06:00:52 UTC
+Specification: Approved Phase 3A Version 2.2 Master Methodology
+Outputs Produced:
+  1. data/processed/delivery_dva.csv
+  2. data/processed/player_match_dva.csv
+  3. data/processed/player_performance_summary.csv
+================================================================================
+
+1. PHASE 3B.2 METHODOLOGY GATE AUDIT
+--------------------------------------------------------------------------------
+  • Question 1: Does actual PI formula & component weights match Version 2.2?
+    -> VERIFIED (100% Match): 2nd Innings = [0.45*S(RRR) + 0.35*W(W_lost) + 0.20*L(B_rem)] * C * M_stage;
+       1st Innings = [0.40*P_collapse + 0.35*P_phase + 0.25*P_pace] * M_stage; M_stage=1.15 in playoffs.
+  • Question 2: Is assigning PI = 1.00 to Super Over deliveries explicitly authorized?
+    -> VERIFIED: Explicitly authorized in Section 2.2 line 106 and Feature Dictionary row 32.
+  • Question 3: Is IPL Impact Player adjustment (W_total = 11) explicitly supported?
+    -> VERIFIED: Explicitly authorized in Section 2.1 line 76 and Feature Dictionary row 25.
+  • Gate Verdict: ALL 3 QUESTIONS FORMALLY VERIFIED AND APPROVED.
+
+2. DATASET INTEGRITY & ROW COUNTS
+--------------------------------------------------------------------------------
+  • Input Deliveries Count                 : 194,014
+  • Output Delivery DVA Count              : 194,014 (Exact 1:1 match)
+  • Output Delivery DVA Columns            : 91 columns
+  • Output Player-Match DVA Records        : 22,959 records
+    - Batter-Match Records                 : 13,229
+    - Bowler-Match Records                 : 9,730
+  • Output Player Career Summaries         : 1,420 records
+    - Unique Batters                       : 824
+    - Unique Bowlers                       : 596
+
+3. UNIQUENESS & NULL CHECKS
+--------------------------------------------------------------------------------
+  • Delivery Key Duplicates (match, inn, over, ball)   : 0 (100% Unique)
+  • Player-Match Key Duplicates (player, match, role)  : 0 (100% Unique)
+  • Player Career Summary Duplicates (player, role)     : 0 (100% Unique)
+  • Bowler DVA Null Count                               : 0 (0 Nulls)
+  • Batter DVA Null Count (Wides)                       : 7,474 (Matches 7,474 wides)
+
+4. FORMULA IMPLEMENTATION & RUN RECONCILIATION
+--------------------------------------------------------------------------------
+  • Batter DVA Formula: DVA_bat = runs - (Par_SR / 100) - (Wkt_Penalty if striker_dismissed else 0.0)
+    - Total Batter Balls Faced Eligible        : 186,540 (96.15%)
+    - Total Striker Dismissals Penalized       : 10,223
+    - Total Non-Striker Run-Outs Preserved     : 263 (Striker NOT penalized)
+    - Net Cumulative Batter DVA (All Deliveries): -18405.78 runs
+
+  • Bowler DVA Formula: DVA_bowl = Expected_Runs_Budget - bowler_runs_conceded + Wicket_Bonus
+    - Expected Runs Budget on Legal Deliveries : Par_Econ / 6.0
+    - Expected Runs Budget on Illegal Deliveries: 0.00 (Properly penalizes illegal balls)
+    - Total Bowler Legal Deliveries Bowled     : 185,715 (95.72%)
+    - Total Bowler Illegal Deliveries Bowled   : 8,299 ( 4.28%)
+    - Total Bowler Runs Conceded               : 269,418 (Matches exact 269,418 macro reconciliation)
+    - Total Bowler-Credited Wickets Rewarded   : 9,905 (Caught, Bowled, LBW, Stumped, Hit Wkt)
+    - Net Cumulative Bowler DVA (All Deliveries): 8427.62 runs
+
+5. DVA AGGREGATION RECONCILIATION (DELIVERY -> PLAYER-MATCH)
+--------------------------------------------------------------------------------
+  • Batter Delivery DVA Sum    : -18405.7780
+  • Batter Player-Match DVA Sum: -18405.7780 (Discrepancy: 0.0000)
+  • Bowler Delivery DVA Sum    : 8427.6200
+  • Bowler Player-Match DVA Sum: 8427.6188 (Discrepancy: 0.0012)
+
+6. PRESSURE VS BASELINE EXPOSURE & PERFORMANCE
+--------------------------------------------------------------------------------
+  • High Pressure Deliveries (PI >= 0.65)   : 20,121 (10.37%)
+    - Batter Pressure Balls Faced          : 19,180
+    - Batter Pressure Cumulative DVA       : -4862.79 runs
+    - Batter Pressure DVA per Ball Faced   : -0.2535
+    - Bowler Legal Pressure Balls          : 19,062
+    - Bowler Pressure Cumulative DVA       : 3534.21 runs
+    - Bowler Pressure DVA per Legal Ball   : 0.1854
+
+  • Baseline Deliveries (PI < 0.65, Inn 1 & 2): 173,893 (89.62%)
+    - Batter Baseline Balls Faced          : 167,360
+    - Batter Baseline Cumulative DVA       : -13542.99 runs
+    - Batter Baseline DVA per Ball Faced   : -0.0809
+    - Bowler Legal Baseline Balls          : 166,653
+    - Bowler Baseline Cumulative DVA       : 4893.41 runs
+    - Bowler Baseline DVA per Legal Ball   : 0.0294
+
+7. FORMAT-WISE PERFORMANCE SUMMARY (IPL VS T20I)
+--------------------------------------------------------------------------------
+  • IPL Format:
+    - Total Deliveries: 87,687 | Batter Balls Faced: 84,135 | Bowler Legal Balls: 83,755
+    - High Pressure Deliveries: 8,630 (9.84%)
+    - Pressure Exposure: Batters=8,162 balls, Bowlers=8,103 legal balls
+    - Total DVA: Batter=-7696.87, Bowler=3015.55
+  • T20I Format:
+    - Total Deliveries: 106,327 | Batter Balls Faced: 102,405 | Bowler Legal Balls: 101,960
+    - High Pressure Deliveries: 11,491 (10.81%)
+    - Pressure Exposure: Batters=11,018 balls, Bowlers=10,959 legal balls
+    - Total DVA: Batter=-10708.91, Bowler=5412.07
+
+8. SUPER OVER & DLS SEGREGATION
+--------------------------------------------------------------------------------
+  • Super Over Deliveries Count            : 26 (100% High Pressure, PI = 1.00)
+  • Super Over Batter DVA Sum              : -13.56
+  • Super Over Bowler DVA Sum              : 6.62
+  • DLS Matches Deliveries Count           : 5,254
+  • DLS Deliveries under High Pressure     : 508 (9.67%)
+
+9. CONFIDENCE CATEGORY DISTRIBUTION
+--------------------------------------------------------------------------------
+  • Margin Confidence HIGH          : 152,170 deliveries (78.43%) | Weight: 1.00
+  • Margin Confidence LOW           :   7,289 deliveries ( 3.76%) | Weight: 0.60
+  • Margin Confidence MEDIUM        :  32,623 deliveries (16.81%) | Weight: 0.90
+  • Margin Confidence NOT_APPLICABLE:   1,932 deliveries ( 1.00%) | Weight: 0.00
+
+10. MATCH SUCCESS INDICATOR I(i, m) AUDIT
+--------------------------------------------------------------------------------
+  • Batter Qualifying Pressure Matches (>=3 balls or out): 2,486
+    - Matches with Positive Net Pressure DVA (I = 1)     : 675 (27.15%)
+    - Matches with Zero/Negative Net DVA (I = 0)         : 1,811
+  • Bowler Qualifying Pressure Matches (>=6 legal balls) : 1,943
+    - Matches with Positive Net Pressure DVA (I = 1)     : 1,238 (63.72%)
+    - Matches with Zero/Negative Net DVA (I = 0)         : 705
+
+11. SAMPLE MANUAL CALCULATIONS AUDIT
+--------------------------------------------------------------------------------
+A. FIVE SAMPLE BATTERS:
+  • Tim David (ID 6396):
+    - Overall : Balls=1226, Runs=2178, Dismissals=62, SR=177.65, Cumulative DVA=282.64
+    - Pressure: Balls=249, Runs=487, Dismissals=11, SR=195.58, DVA=83.07, DVA/ball=0.3336
+    - Baseline: Balls=977, Runs=1691, Dismissals=51, SR=173.08, DVA=199.57, DVA/ball=0.2043
+    - Delta SR: +22.50 (Improved under pressure) | Delta DVA/ball=+0.1293
+    - Matches : Played=98, Pressure=25, PSR-Eligible=24, Successful=16
+
+  • Rovman Powell (ID 4986):
+    - Overall : Balls=1559, Runs=2288, Dismissals=81, SR=146.76, Cumulative DVA=-18.74
+    - Pressure: Balls=242, Runs=382, Dismissals=17, SR=157.85, DVA=4.92, DVA/ball=0.0203
+    - Baseline: Balls=1317, Runs=1906, Dismissals=64, SR=144.72, DVA=-23.66, DVA/ball=-0.018
+    - Delta SR: +13.13 (Improved under pressure) | Delta DVA/ball=+0.0383
+    - Matches : Played=100, Pressure=26, PSR-Eligible=24, Successful=9
+
+  • Axar Patel (ID 2876):
+    - Overall : Balls=1279, Runs=1761, Dismissals=75, SR=137.69, Cumulative DVA=-226.46
+    - Pressure: Balls=218, Runs=316, Dismissals=17, SR=144.95, DVA=-42.87, DVA/ball=-0.1967
+    - Baseline: Balls=1061, Runs=1445, Dismissals=58, SR=136.19, DVA=-183.59, DVA/ball=-0.173
+    - Delta SR: +8.76 (Improved under pressure) | Delta DVA/ball=-0.0236
+    - Matches : Played=105, Pressure=27, PSR-Eligible=27, Successful=8
+
+  • Romario Shepherd (ID 6726):
+    - Overall : Balls=687, Runs=1059, Dismissals=40, SR=154.15, Cumulative DVA=3.90
+    - Pressure: Balls=293, Runs=426, Dismissals=13, SR=145.39, DVA=-15.09, DVA/ball=-0.0515
+    - Baseline: Balls=394, Runs=633, Dismissals=27, SR=160.66, DVA=18.99, DVA/ball=0.0482
+    - Delta SR: -15.27 (Declined under pressure) | Delta DVA/ball=-0.0997
+    - Matches : Played=68, Pressure=31, PSR-Eligible=29, Successful=12
+
+  • Rashid Khan (ID 4722):
+    - Overall : Balls=507, Runs=791, Dismissals=44, SR=156.02, Cumulative DVA=-27.83
+    - Pressure: Balls=263, Runs=408, Dismissals=21, SR=155.13, DVA=-14.90, DVA/ball=-0.0567
+    - Baseline: Balls=244, Runs=383, Dismissals=23, SR=156.97, DVA=-12.93, DVA/ball=-0.053
+    - Delta SR: -1.83 (Declined under pressure) | Delta DVA/ball=-0.0037
+    - Matches : Played=71, Pressure=38, PSR-Eligible=31, Successful=11
+
+B. FIVE SAMPLE BOWLERS:
+  • Arshdeep Singh (ID 6464):
+    - Overall : Legal=3207, Runs=4863, Wickets=194, Econ=9.1, Cumulative DVA=99.18
+    - Pressure: Legal=406, Runs=604, Wickets=29, Econ=8.93, DVA=56.73, DVA/ball=0.1397
+    - Baseline: Legal=2801, Runs=4259, Wickets=165, Econ=9.12, DVA=42.45, DVA/ball=0.0152
+    - Delta Econ: -0.20 (Suppression=+0.20 RPO - Improved under pressure) | Delta DVA/ball=+0.1246
+    - Matches : Bowled=147, Pressure=59, PSR-Eligible=43, Successful=25
+
+  • Rashid Khan (ID 4722):
+    - Overall : Legal=2747, Runs=3390, Wickets=153, Econ=7.4, Cumulative DVA=726.37
+    - Pressure: Legal=358, Runs=413, Wickets=33, Econ=6.92, DVA=159.51, DVA/ball=0.4456
+    - Baseline: Legal=2389, Runs=2977, Wickets=120, Econ=7.48, DVA=566.86, DVA/ball=0.2373
+    - Delta Econ: -0.55 (Suppression=+0.55 RPO - Improved under pressure) | Delta DVA/ball=+0.2083
+    - Matches : Bowled=122, Pressure=48, PSR-Eligible=37, Successful=28
+
+  • Varun Chakravarthy (ID 6256):
+    - Overall : Legal=2128, Runs=2828, Wickets=135, Econ=7.97, Cumulative DVA=410.28
+    - Pressure: Legal=332, Runs=387, Wickets=30, Econ=6.99, DVA=142.20, DVA/ball=0.4283
+    - Baseline: Legal=1796, Runs=2441, Wickets=105, Econ=8.15, DVA=268.08, DVA/ball=0.1493
+    - Delta Econ: -1.16 (Suppression=+1.16 RPO - Improved under pressure) | Delta DVA/ball=+0.2791
+    - Matches : Bowled=95, Pressure=40, PSR-Eligible=33, Successful=27
+
+  • Harshal Patel (ID 2261):
+    - Overall : Legal=1643, Runs=2529, Wickets=96, Econ=9.24, Cumulative DVA=41.27
+    - Pressure: Legal=300, Runs=481, Wickets=19, Econ=9.62, DVA=13.33, DVA/ball=0.0444
+    - Baseline: Legal=1343, Runs=2048, Wickets=77, Econ=9.15, DVA=27.95, DVA/ball=0.0208
+    - Delta Econ: +0.47 (Suppression=-0.47 RPO - Declined under pressure) | Delta DVA/ball=+0.0236
+    - Matches : Bowled=79, Pressure=36, PSR-Eligible=27, Successful=14
+
+  • Ravi Bishnoi (ID 7503):
+    - Overall : Legal=2327, Runs=3223, Wickets=124, Econ=8.31, Cumulative DVA=230.90
+    - Pressure: Legal=289, Runs=418, Wickets=26, Econ=8.68, DVA=35.77, DVA/ball=0.1238
+    - Baseline: Legal=2038, Runs=2805, Wickets=98, Econ=8.26, DVA=195.12, DVA/ball=0.0957
+    - Delta Econ: +0.42 (Suppression=-0.42 RPO - Declined under pressure) | Delta DVA/ball=+0.0280
+    - Matches : Bowled=109, Pressure=40, PSR-Eligible=29, Successful=19
+
+12. DATA LEAKAGE & PRE-DELIVERY TEMPORAL INTEGRITY
+--------------------------------------------------------------------------------
+  • Temporal Boundary Integrity: PASSED
+    - Pre-delivery pressure index (PI_t) evaluated strictly at state t-1.
+    - DVA_t evaluates execution on ball t conditioned on PI_t >= 0.65.
+    - Zero circularity: DVA outcome does not alter pre-delivery PI_t.
+
+================================================================================
+PHASE 3C DELIVERY VALUE ADDED ENGINE AUDIT COMPLETE — ALL REQUIREMENTS SATISFIED
+================================================================================

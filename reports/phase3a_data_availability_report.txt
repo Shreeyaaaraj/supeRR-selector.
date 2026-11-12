@@ -1,0 +1,105 @@
+================================================================================
+CRICKET PRESSURE INDEX — PHASE 3A DATA AVAILABILITY & AUDIT REPORT (VERSION 2.2)
+================================================================================
+Source: Frozen datasets in data/processed/
+Generated: 2026-11-11 (Final Correction Audit Specification)
+================================================================================
+
+1. MACRO DATASET TOTALS
+--------------------------------------------------------------------------------
+  • Total Matches                 : 853
+  • Total Competitions            : 139 (IPL: 5, T20I: 134)
+  • Total Teams                   : 33 (337 competition-team pairings)
+  • Total Playing XI Player-Match : 27,353 unique records
+  • Total Ball-by-Ball Deliveries : 194,014
+
+2. DECOUPLED BALL ACCOUNTING BREAKDOWN
+--------------------------------------------------------------------------------
+  • Batter Balls Faced (is_batter_ball_faced): 186,540 deliveries (96.15%)
+    - Excludes Wides (7,474 deliveries) under MCC Law 22.14
+    - Includes Fair Deliveries (182,548 deliveries)
+    - Includes Byes / Leg-byes (3,166 deliveries)
+    - Includes No-Balls (825 deliveries: 565 Overstep, 260 other) under Law 21.18
+    - Includes Penalty Delivery (1 delivery: Match 16753, Over 6.4, fair full toss faced)
+
+  • Bowler Legal Balls (is_bowler_legal_ball): 185,715 deliveries (95.72%)
+    - Decreases Team Balls Remaining
+    - Counts towards 6 balls per over under MCC Law 17.4
+    - Includes the 1 Penalty delivery (ball 4 of 6-ball over)
+
+  • Bowler Illegal Deliveries (Re-bowled)   :   8,299 deliveries ( 4.28%)
+    - Wides (extras_type == 'wide')         :   7,474 deliveries ( 3.85%)
+    - Front-Foot No-Balls ('Overstep')      :     565 deliveries ( 0.29%)
+    - Height/Other No-Balls ('other')       :     260 deliveries ( 0.13%)
+
+3. RECONCILIATION OF EXTRAS_2_RUNS > 0 (35 RECORDS TOTAL)
+--------------------------------------------------------------------------------
+  Census of all records where extras_2_runs > 0:
+  • extras_2_runs == 1 : 19 records
+  • extras_2_runs == 4 : 16 records
+  • Grand Total Sum    : 19 * 1 + 16 * 4 = 83 runs
+
+  Strict Statutory Partition:
+  A. No-Ball Deliveries (extras_type in ['Overstep', 'other']):
+     - Overstep : 12 one-run records,  9 four-run records (21 records, 48 runs)
+     - other    :  6 one-run records,  7 four-run records (13 records, 34 runs)
+     - Subtotal : 18 one-run records, 16 four-run records (34 records, 82 runs)
+     - Treatment: Under MCC Law 21.18, 1 run penalty debited to bowler;
+                  the 82 runs in extras_2_runs are byes/leg-byes credited to team.
+
+  B. Fair Delivery with Leg-Byes (Row 36854: Malan vs Rauf, Over 5.4):
+     - Subtotal :  1 one-run record,   0 four-run records ( 1 record,   1 run)
+     - Treatment: Under MCC Law 24, 1 leg-bye credited to team; 0 to bowler.
+
+  C. Cross-Check:
+     - Total 1-run records: 18 (no-balls) + 1 (leg-bye) = 19 records
+     - Total 4-run records: 16 (no-balls) + 0 (leg-bye) = 16 records
+     - Total Sum          : 82 + 1 = 83 runs (100.00% Reconciled)
+
+4. COMPREHENSIVE MACRO RUN RECONCILIATION
+--------------------------------------------------------------------------------
+  • Total Team Delivery Runs in Dataset     : 272,672 runs
+  • Total Calculated Bowler Runs Conceded   : 269,418 runs
+  • Exact Mathematical Difference           :   3,254 runs
+
+  Decomposition of Non-Bowler Extras (Reconciles to 0.00 Error):
+    - Byes (extras_type == 'byes')          :     505 runs
+    - Leg-Byes (extras_type == 'legbyes')   :   2,661 runs
+    - Penalty Runs (extras_type == 'Penalty'):       5 runs
+    - Byes/Leg-byes on No-Balls (extras_2)  :      82 runs (18 * 1 + 16 * 4)
+    - Row 36854 Leg-Bye (extras_2)          :       1 run  (1 * 1)
+    ----------------------------------------------------------------------------
+    Total Non-Bowler Extras                 :   3,254 runs (Exact 0.00 Error)
+
+5. EMPIRICAL PAR BASELINES FOR DELIVERY VALUE ADDED (DVA)
+--------------------------------------------------------------------------------
+  IPL Baselines:
+    - Powerplay (1-6) : Par SR = 143.48, Par Econ =  8.61, Par Bdry = 22.86%, Par Dot = 45.11%
+    - Middle (7-15)   : Par SR = 139.10, Par Econ =  8.34, Par Bdry = 16.18%, Par Dot = 31.01%
+    - Death (16-20)   : Par SR = 167.82, Par Econ = 10.07, Par Bdry = 21.75%, Par Dot = 30.78%
+
+  T20I Baselines:
+    - Powerplay (1-6) : Par SR = 129.74, Par Econ =  7.78, Par Bdry = 19.56%, Par Dot = 47.87%
+    - Middle (7-15)   : Par SR = 128.98, Par Econ =  7.74, Par Bdry = 14.03%, Par Dot = 33.69%
+    - Death (16-20)   : Par SR = 152.88, Par Econ =  9.16, Par Bdry = 18.84%, Par Dot = 33.51%
+
+6. SHRINKAGE STABILITY ACROSS ALTERNATIVE K SENSITIVITY GRID
+--------------------------------------------------------------------------------
+  • Operational Anchors: K_batter = 50 balls, K_bowler = 48 balls.
+  • Derived from match-level signal-to-noise ratios (K_match = 4.36 for batters, 7.56 for bowlers).
+  • Ranking Stability across Sensitivity Grid (K in [25, 100]):
+    - Top 10 overlap between K=25 and K=50 : 9 / 10 (90%)
+    - Top 10 overlap between K=50 and K=75 : 9 / 10 (90%)
+    - Top 10 overlap between K=50 and K=100: 9 / 10 (90%)
+    - Confirms player rankings are robust and stable against shrinkage variation.
+
+7. CONFIDENCE TIER COVERAGE (2ND INNINGS)
+--------------------------------------------------------------------------------
+  • HIGH           :  72,424 deliveries (78.78%) -> Weight 1.00
+  • MEDIUM         :  15,898 deliveries (17.29%) -> Weight 0.90
+  • LOW            :   3,524 deliveries ( 3.83%) -> Weight 0.60
+  • NOT_APPLICABLE :      88 deliveries ( 0.10%) -> Excluded
+
+================================================================================
+END OF REVISED AUDIT REPORT (VERSION 2.2)
+================================================================================

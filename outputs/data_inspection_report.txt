@@ -1,0 +1,484 @@
+
+================================================================================
+1. DATASET DIMENSIONS, COLUMN NAMES & DATA TYPES
+================================================================================
+
+File: competitions.csv
+  • Dimensions : 141 rows x 4 columns
+  • Memory Size: 0.03 MB
+  • Column Inventory & Data Types:
+    - comp_id                   : int64
+    - comp_name                 : object
+    - match_format              : object
+    - season                    : object
+
+File: teams.csv
+  • Dimensions : 353 rows x 3 columns
+  • Memory Size: 0.03 MB
+  • Column Inventory & Data Types:
+    - comp_id                   : int64
+    - team_id                   : int64
+    - team_name                 : object
+
+File: competition_team_player_mapping.csv
+  • Dimensions : 6,413 rows x 6 columns
+  • Memory Size: 1.54 MB
+  • Column Inventory & Data Types:
+    - comp_id                   : int64
+    - comp_name                 : object
+    - team_id                   : int64
+    - team_name                 : object
+    - player_id                 : int64
+    - player_name               : object
+
+File: matches.csv
+  • Dimensions : 883 rows x 22 columns
+  • Memory Size: 0.51 MB
+  • Column Inventory & Data Types:
+    - match_id                  : int64
+    - comp_id                   : int64
+    - match_number              : int64
+    - match_date                : object
+    - stage                     : object
+    - venue_id                  : int64
+    - venue_country             : object
+    - home_team_id              : int64
+    - home_team                 : object
+    - away_team_id              : int64
+    - away_team                 : object
+    - home_team_captain_id      : float64
+    - away_team_captain_id      : float64
+    - toss_win_team_id          : float64
+    - toss_opted                : object
+    - man_of_the_match          : int64
+    - first_inn_revised_overs   : float64
+    - second_inn_revised_overs  : float64
+    - revised_target            : float64
+    - knock_out                 : int64
+    - win_team_id               : float64
+    - result                    : object
+
+File: playing_eleven.csv
+  • Dimensions : 28,381 rows x 9 columns
+  • Memory Size: 3.07 MB
+  • Column Inventory & Data Types:
+    - match_id                  : int64
+    - team_id                   : int64
+    - player_id                 : int64
+    - batting_order             : float64
+    - is_played                 : bool
+    - is_captain                : object
+    - is_wk                     : object
+    - is_impact                 : int64
+    - is_impact_off             : int64
+
+File: ball_by_ball.csv
+  • Dimensions : 200,999 rows x 33 columns
+  • Memory Size: 182.27 MB
+  • Column Inventory & Data Types:
+    - match_id                  : int64
+    - innings                   : int64
+    - overid                    : int64
+    - over_ball_num             : int64
+    - innings_ball_num          : int64
+    - batting_team_id           : int64
+    - bowling_team_id           : int64
+    - striker_id                : int64
+    - striker_name              : object
+    - non_striker_id            : int64
+    - non_striker_name          : object
+    - bowler_id                 : int64
+    - bowler_name               : object
+    - batting_type              : object
+    - bowling_type              : object
+    - batting_order             : int64
+    - runs                      : int64
+    - is_four                   : bool
+    - is_six                    : bool
+    - is_wicket                 : bool
+    - dismissal_type_id         : float64
+    - dismissal_type            : object
+    - dismissed_player_id       : float64
+    - extras_type               : object
+    - extras1_runs              : int64
+    - extras_2_runs             : int64
+    - pace_or_spin              : object
+    - bowl_speed                : float64
+    - stroke                    : object
+    - delivery_style            : object
+    - over_or_around            : object
+    - on_or_off                 : object
+    - delivery_ist_time         : object
+
+================================================================================
+2. MISSING VALUES & DUPLICATE RECORDS
+================================================================================
+
+File: competitions.csv (Total Rows: 141)
+  • Exact Duplicate Rows: 0 (0.00%)
+  • Missing Values: None (All columns 100% complete)
+
+File: teams.csv (Total Rows: 353)
+  • Exact Duplicate Rows: 0 (0.00%)
+  • Missing Values: None (All columns 100% complete)
+
+File: competition_team_player_mapping.csv (Total Rows: 6,413)
+  • Exact Duplicate Rows: 0 (0.00%)
+  • Missing Values: None (All columns 100% complete)
+
+File: matches.csv (Total Rows: 883)
+  • Exact Duplicate Rows: 0 (0.00%)
+  • Columns with Missing Values (8 affected):
+    - home_team_captain_id      :      44 nulls (  4.98%)
+    - away_team_captain_id      :      45 nulls (  5.10%)
+    - toss_win_team_id          :      15 nulls (  1.70%)
+    - toss_opted                :      15 nulls (  1.70%)
+    - first_inn_revised_overs   :     858 nulls ( 97.17%)
+    - second_inn_revised_overs  :     858 nulls ( 97.17%)
+    - revised_target            :     860 nulls ( 97.40%)
+    - win_team_id               :      41 nulls (  4.64%)
+
+File: playing_eleven.csv (Total Rows: 28,381)
+  • Exact Duplicate Rows: 0 (0.00%)
+  • Columns with Missing Values (3 affected):
+    - batting_order             :   8,678 nulls ( 30.58%)
+    - is_captain                :   8,667 nulls ( 30.54%)
+    - is_wk                     :   8,667 nulls ( 30.54%)
+
+File: ball_by_ball.csv (Total Rows: 200,999)
+  • Exact Duplicate Rows: 0 (0.00%)
+  • Columns with Missing Values (7 affected):
+    - dismissal_type_id         : 190,118 nulls ( 94.59%)
+    - dismissal_type            : 190,118 nulls ( 94.59%)
+    - dismissed_player_id       : 190,107 nulls ( 94.58%)
+    - extras_type               : 189,167 nulls ( 94.11%)
+    - stroke                    :   6,158 nulls (  3.06%)
+    - delivery_style            :     391 nulls (  0.19%)
+    - over_or_around            :     407 nulls (  0.20%)
+
+================================================================================
+3. FIRST FIVE RECORDS OF EVERY DATASET
+================================================================================
+
+>>> Head (first 5 records) of competitions.csv:
+ comp_id                                    comp_name match_format season
+    3395 South Africa in New Zealand T20I Series 2026         T20I   2026
+    3405     Afghanistan v Sri Lanka T20I Series 2026         T20I   2026
+    3465           India in Zimbabwe T20I Series 2026         T20I   2026
+    3568      Bangladesh in Zimbabwe T20I Series 2026         T20I   2026
+    3482     Australia in Bangladesh T20I Series 2026         T20I   2026
+
+>>> Head (first 5 records) of teams.csv:
+ comp_id  team_id   team_name
+    1331       22     England
+    1331       28 West Indies
+    1335       18       India
+    1335       28 West Indies
+    1345       20   Australia
+
+>>> Head (first 5 records) of competition_team_player_mapping.csv:
+ comp_id                               comp_name  team_id team_name  player_id  player_name
+    1331 England in West Indies T20I Series 2022       22   England        478  Eoin Morgan
+    1331 England in West Indies T20I Series 2022       22   England        479  Adil Rashid
+    1331 England in West Indies T20I Series 2022       22   England        722  Liam Dawson
+    1331 England in West Indies T20I Series 2022       22   England        786 Chris Jordan
+    1331 England in West Indies T20I Series 2022       22   England       1187    Jason Roy
+
+>>> Head (first 5 records) of matches.csv:
+   match_id  comp_id  match_number  match_date   stage  venue_id venue_country  home_team_id    home_team  away_team_id away_team  home_team_captain_id  away_team_captain_id  toss_win_team_id toss_opted  man_of_the_match  first_inn_revised_overs  second_inn_revised_overs  revised_target  knock_out  win_team_id                        result
+0     13511     1331             1  2022-01-22  League        54   West Indies            28  West Indies            22   England                   NaN                   NaN              28.0   Fielding                 0                      NaN                       NaN             NaN          0         28.0  West Indies Won by 9 Wickets
+1     13512     1331             2  2022-01-23  League        54   West Indies            28  West Indies            22   England                 494.0                 478.0              28.0   Fielding                 0                      NaN                       NaN             NaN          0         22.0          England Won by 1 Run
+2     13513     1331             3  2022-01-26  League        54   West Indies            28  West Indies            22   England                 494.0                1596.0              22.0   Fielding              4986                      NaN                       NaN             NaN          0         28.0    West Indies Won by 20 runs
+3     13514     1331             4  2022-01-29  League        54   West Indies            28  West Indies            22   England                 494.0                1596.0              28.0   Fielding                 0                      NaN                       NaN             NaN          0         22.0        England Won by 34 runs
+4     13515     1331             5  2022-01-30  League        54   West Indies            28  West Indies            22   England                 494.0                   NaN              28.0    Batting                 0                      NaN                       NaN             NaN          0         28.0    West Indies Won by 17 runs
+
+>>> Head (first 5 records) of playing_eleven.csv:
+ match_id  team_id  player_id  batting_order  is_played is_captain is_wk  is_impact  is_impact_off
+    13511       22       1187            1.0       True      False False          0              0
+    13511       22       6273            2.0       True      False False          0              0
+    13511       22       1210            3.0       True      False False          0              0
+    13511       22       1596            4.0       True      False False          0              0
+    13511       22        478            5.0       True      False False          0              0
+
+>>> Head (first 5 records) of ball_by_ball.csv:
+   match_id  innings  overid  over_ball_num  innings_ball_num  batting_team_id  bowling_team_id  striker_id striker_name  non_striker_id non_striker_name  bowler_id       bowler_name batting_type          bowling_type  batting_order  runs  is_four  is_six  is_wicket  dismissal_type_id dismissal_type  dismissed_player_id extras_type  extras1_runs  extras_2_runs pace_or_spin  bowl_speed              stroke delivery_style over_or_around on_or_off        delivery_ist_time
+0     13511        1       1              1                 1               22               28        1187    Jason Roy            6273       Tom Banton       1772  Sheldon Cottrell          RHB  Left-arm fast-medium              1     0    False   False      False                NaN            NaN                  NaN         NaN             6              0         Pace         0.0         Cover Drive        Inswing           Over  Off-side  2022-01-23 00:00:00 UTC
+1     13511        1       1              2                 2               22               28        1187    Jason Roy            6273       Tom Banton       1772  Sheldon Cottrell          RHB  Left-arm fast-medium              1     0    False   False      False                NaN            NaN                  NaN         NaN             6              0         Pace         0.0               Flick        Inswing           Over   On-side  2022-01-23 00:00:00 UTC
+2     13511        1       1              3                 3               22               28        1187    Jason Roy            6273       Tom Banton       1772  Sheldon Cottrell          RHB  Left-arm fast-medium              1     0    False   False      False                NaN            NaN                  NaN         NaN             6              0         Pace         0.0          Square Cut        Inswing           Over  Off-side  2022-01-23 00:00:00 UTC
+3     13511        1       1              4                 4               22               28        1187    Jason Roy            6273       Tom Banton       1772  Sheldon Cottrell          RHB  Left-arm fast-medium              1     0    False   False      False                NaN            NaN                  NaN         NaN             6              0         Pace         0.0  Backfoot defensive        Inswing           Over   On-side  2022-01-23 00:00:00 UTC
+4     13511        1       1              5                 5               22               28        1187    Jason Roy            6273       Tom Banton       1772  Sheldon Cottrell          RHB  Left-arm fast-medium              1     6    False    True      False                NaN            NaN                  NaN         NaN             6              0         Pace         0.0           Pull shot      Seamed In           Over   On-side  2022-01-23 00:00:00 UTC
+
+================================================================================
+4. EMPIRICAL EVALUATION OF PRIMARY & COMPOSITE KEYS
+================================================================================
+
+File: competitions.csv | Candidate Key: ['comp_id']
+  • Status          : STRICTLY UNIQUE (VALID PRIMARY KEY)
+  • Unique Values   : 141 / 141 rows
+  • Duplicate Rows  : 0
+
+File: teams.csv | Candidate Key: ['team_id']
+  • Status          : NOT UNIQUE (CONTAINS DUPLICATES)
+  • Unique Values   : 38 / 353 rows
+  • Duplicate Rows  : 348
+  • Sample Duplicate Keys:
+ team_id
+      22
+      28
+      18
+      28
+
+File: teams.csv | Candidate Key: ['comp_id', 'team_id']
+  • Status          : STRICTLY UNIQUE (VALID PRIMARY KEY)
+  • Unique Values   : 353 / 353 rows
+  • Duplicate Rows  : 0
+
+File: mapping.csv | Candidate Key: ['player_id']
+  • Status          : NOT UNIQUE (CONTAINS DUPLICATES)
+  • Unique Values   : 1,217 / 6,413 rows
+  • Duplicate Rows  : 6,016
+  • Sample Duplicate Keys:
+ player_id
+       479
+       722
+       786
+      1187
+
+File: mapping.csv | Candidate Key: ['comp_id', 'player_id']
+  • Status          : STRICTLY UNIQUE (VALID PRIMARY KEY)
+  • Unique Values   : 6,413 / 6,413 rows
+  • Duplicate Rows  : 0
+
+File: mapping.csv | Candidate Key: ['comp_id', 'team_id', 'player_id']
+  • Status          : STRICTLY UNIQUE (VALID PRIMARY KEY)
+  • Unique Values   : 6,413 / 6,413 rows
+  • Duplicate Rows  : 0
+
+File: matches.csv | Candidate Key: ['match_id']
+  • Status          : STRICTLY UNIQUE (VALID PRIMARY KEY)
+  • Unique Values   : 883 / 883 rows
+  • Duplicate Rows  : 0
+
+File: playing_eleven.csv | Candidate Key: ['match_id', 'player_id']
+  • Status          : NOT UNIQUE (CONTAINS DUPLICATES)
+  • Unique Values   : 28,341 / 28,381 rows
+  • Duplicate Rows  : 75
+  • Sample Duplicate Keys:
+ match_id  player_id
+    13613       3539
+    13613        838
+    13613        250
+    13613       2639
+
+File: playing_eleven.csv | Candidate Key: ['match_id', 'team_id', 'player_id']
+  • Status          : NOT UNIQUE (CONTAINS DUPLICATES)
+  • Unique Values   : 28,341 / 28,381 rows
+  • Duplicate Rows  : 75
+  • Sample Duplicate Keys:
+ match_id  team_id  player_id
+    13613       20       3539
+    13613       20        838
+    13613       20        250
+    13613       20       2639
+
+File: ball_by_ball.csv | Candidate Key: ['match_id', 'innings', 'overid', 'over_ball_num']
+  • Status          : STRICTLY UNIQUE (VALID PRIMARY KEY)
+  • Unique Values   : 200,999 / 200,999 rows
+  • Duplicate Rows  : 0
+
+File: ball_by_ball.csv | Candidate Key: ['match_id', 'innings', 'innings_ball_num']
+  • Status          : STRICTLY UNIQUE (VALID PRIMARY KEY)
+  • Unique Values   : 200,999 / 200,999 rows
+  • Duplicate Rows  : 0
+
+================================================================================
+5. CONTEXT-AWARE RELATIONSHIPS & REFERENTIAL INTEGRITY
+================================================================================
+
+A. Team ID Validation in Competition Context
+--------------------------------------------------------------------------------
+  • Total distinct team_id values: 38
+  • Total (comp_id, team_id) pairings: 353
+  • team_id values appearing in >1 competition: 33 (86.8%)
+  • EMPIRICAL FINDING: team_id is NOT globally unique; it is scoped by comp_id.
+  • matches (comp_id, home_team_id) missing from teams: 0
+  • matches (comp_id, away_team_id) missing from teams: 0
+  • matches (comp_id, win_team_id) missing from teams : 274
+  • playing_eleven (comp_id, team_id) missing from teams: 0
+  • mapping (comp_id, team_id) missing from teams       : 0
+
+B. Player ID Validation Across Match, Team, and Competition Context
+--------------------------------------------------------------------------------
+  • playing_eleven (comp_id, team_id, player_id) not in mapping: 1
+    Sample missing triplets (comp_id, team_id, player_id): [(2670, 4444, 29833)]
+  • bbb strikers not in playing_eleven (match, team, player)     : 6
+  • bbb bowlers not in playing_eleven (match, team, player)      : 3
+  • bbb non-strikers not in playing_eleven (match, team, player) : 5
+  • In Target IPL & T20I matches -> Missing strikers: 0, Missing bowlers: 0
+
+================================================================================
+6. IDENTIFICATION OF IPL & T20I COMPETITIONS
+================================================================================
+IPL Competitions Detected (5 seasons):
+  • comp_id 1358: IPL 2022                  | Season: 2022 | Matches: 74
+  • comp_id 1715: IPL 2023                  | Season: 2023 | Matches: 74
+  • comp_id 2193: IPL 2024                  | Season: 2024 | Matches: 74
+  • comp_id 2725: IPL 2025                  | Season: 2025 | Matches: 75
+  • comp_id 3298: IPL 2026                  | Season: 2026 | Matches: 74
+
+T20 International (T20I) Competitions:
+  • Total T20I competitions in competitions.csv: 134
+  • T20I competitions with match records        : 131
+  • Total T20I matches in matches.csv           : 482
+
+Non-IPL / Non-T20I Competitions Present in Raw Data (2 found):
+  • comp_id 2670: Mens T20 Emerging Teams Asia Cup 2024      | Format: T20 | Matches: 15
+  • comp_id 3289: Asia Cup Rising Stars 2025                 | Format: T20 | Matches: 15
+
+Match Date Coverage: 2022-01-22 to 2026-11-01
+Match distribution by calendar year:
+  • Year 2022: 180 matches
+  • Year 2023: 140 matches
+  • Year 2024: 200 matches
+  • Year 2025: 217 matches
+  • Year 2026: 146 matches
+
+================================================================================
+7. CRICKET MECHANICS, EXTRAS VALIDATION & LEGAL DELIVERIES
+================================================================================
+
+A. Batter Runs Distribution (column 'runs')
+--------------------------------------------------------------------------------
+Batter runs distribution across all 200,999 deliveries:
+  • 0 runs:  79,387 deliveries (39.50%)
+  • 1 runs:  72,267 deliveries (35.95%)
+  • 2 runs:  12,547 deliveries ( 6.24%)
+  • 3 runs:     656 deliveries ( 0.33%)
+  • 4 runs:  23,303 deliveries (11.59%)
+  • 5 runs:      25 deliveries ( 0.01%)
+  • 6 runs:  12,814 deliveries ( 6.38%)
+
+B. Extras Categories & String Casing
+--------------------------------------------------------------------------------
+Distribution of raw 'extras_type' values:
+  • Legal Ball (No Extras, NaN)     : 189,167 deliveries (94.11%)
+  • 'wide'                          :   7,714 deliveries ( 3.84%)
+  • 'legbyes'                       :   2,748 deliveries ( 1.37%)
+  • 'Overstep'                      :     576 deliveries ( 0.29%)
+  • 'byes'                          :     529 deliveries ( 0.26%)
+  • 'other'                         :     264 deliveries ( 0.13%)
+  • 'Penalty'                       :       1 deliveries ( 0.00%)
+
+Casing and whitespace audit of extras_type:
+  - Original: 'wide'       -> Normalized: 'wide'
+  - Original: 'legbyes'    -> Normalized: 'legbyes'
+  - Original: 'byes'       -> Normalized: 'byes'
+  - Original: 'Overstep'   -> Normalized: 'overstep'
+  - Original: 'other'      -> Normalized: 'other'
+  - Original: 'Penalty'    -> Normalized: 'penalty'
+
+C. Cross-Tabulation: extras_type vs extras1_runs (Empirical Decoding)
+--------------------------------------------------------------------------------
+extras1_runs    1     2     3    4    5       6  7     All
+extras_type                                               
+NONE            0     0     0    0    0  189167  0  189167
+Overstep      576     0     0    0    0       0  0     576
+Penalty         0     0     0    0    0       0  1       1
+byes            0     0     0  529    0       0  0     529
+legbyes         0     0  2748    0    0       0  0    2748
+other           0     0     0    0  264       0  0     264
+wide            0  7714     0    0    0       0  0    7714
+All           576  7714  2748  529  264  189167  1  200999
+
+EMPIRICAL VERIFICATION OF 'extras1_runs':
+  • Every single 'NONE' (legal ball off bat) has extras1_runs == 6.
+  • Every single 'Overstep' (crease no-ball) has extras1_runs == 1.
+  • Every single 'wide' has extras1_runs == 2.
+  • Every single 'legbyes' has extras1_runs == 3.
+  • Every single 'byes' has extras1_runs == 4.
+  • Every single 'other' has extras1_runs == 5.
+  • Every single 'Penalty' has extras1_runs == 7.
+  • CONCLUSION: 'extras1_runs' is an internal categorical encoding (1-7), NOT numerical runs conceded!
+
+D. Extras 2 Runs Distribution (column 'extras_2_runs')
+--------------------------------------------------------------------------------
+  • 0 runs: 200,963 deliveries (99.98%)
+  • 1 runs:      20 deliveries ( 0.01%)
+  • 4 runs:      16 deliveries ( 0.01%)
+
+E. Empirical Validation of Legal vs Illegal Deliveries
+--------------------------------------------------------------------------------
+Measuring mean over length and % of overs with > 6 deliveries for each extras_type:
+  • wide         (Total events: 7,714) -> Mean balls in over: 7.23 | % overs > 6 balls:  98.6%
+  • legbyes      (Total events: 2,748) -> Mean balls in over: 6.28 | % overs > 6 balls:  23.5%
+  • byes         (Total events:   529) -> Mean balls in over: 6.32 | % overs > 6 balls:  27.2%
+  • Overstep     (Total events:   576) -> Mean balls in over: 7.43 | % overs > 6 balls:  98.0%
+  • other        (Total events:   264) -> Mean balls in over: 7.44 | % overs > 6 balls:  96.5%
+  • Penalty      (Total events:     1) -> Mean balls in over: 6.00 | % overs > 6 balls:   0.0%
+
+Summary of Delivery Legality:
+  • Legal Deliveries   (advance over ball count) : 192,445 (95.74%)
+  • Illegal Deliveries (must be re-bowled, extras):   8,554 ( 4.26%)
+
+F. Empirical Reconciliation of Delivery Runs Against Match Margins
+--------------------------------------------------------------------------------
+Testing run reconciliation on 399 matches decided by run margins:
+  • Formula 1 (Batter runs only 'runs'):
+    - Mean Absolute Error: 4.87 runs | Exact Margin Matches: 24 / 399
+  • Formula 2 (Naive 'runs + extras1_runs'):
+    - Mean Absolute Error: 36.90 runs | Exact Margin Matches: 5 / 399
+  • Formula 3 (Batter runs + Extra Events + 'extras_2_runs'):
+    - Mean Absolute Error: 2.14 runs | Exact Margin Matches: 129 / 399
+  • VERDICT: Formula 3 minimizes error, while Formula 2 produces catastrophic 36+ run distortions.
+
+================================================================================
+8. DYNAMIC AUDIT OF CRITICAL DATA QUALITY ANOMALIES
+================================================================================
+
+A. Bowling Speed Anomalies
+--------------------------------------------------------------------------------
+  • Deliveries with bowl_speed == 0.0 : 77,861 (38.74%)
+  • Deliveries with bowl_speed < 0.0  :      1 (Negative sentinel values, min: -1.0)
+  • Deliveries with bowl_speed > 165  :     20 (Extreme transcription errors, max: 1456.1 km/h)
+  • Valid non-zero speed distribution : Median=123.8 km/h, Q25=94.3, Q75=135.5
+
+B. Impact Player Substitutions
+--------------------------------------------------------------------------------
+  • Impact player subbed in (is_impact == 1)   : 558 instances
+  • Impact player subbed out (is_impact_off == 1): 558 instances
+  • Matches with Impact Player usage           : 291 matches
+  • Competitions with Impact Player rules      : [np.int64(1715), np.int64(2193), np.int64(2725), np.int64(3298)] (IPL 2023 onwards)
+
+C. Rain-Affected Matches (DLS) & Incomplete Games
+--------------------------------------------------------------------------------
+  • Matches with revised targets (DLS)        : 23
+  • Matches with revised 1st innings overs    : 25
+  • Matches with revised 2nd innings overs    : 25
+  • Matches ending in No Result or Abandonment: 41
+
+D. Dismissal Inconsistencies & Spelling Variations
+--------------------------------------------------------------------------------
+  • Total is_wicket == True                   : 10,881
+  • Deliveries with null dismissal_type       : 190,118
+  • Deliveries with null dismissed_player_id  : 190,107
+  • Discrepancies between is_wicket and dismissal_type      : 0
+  • Discrepancies between is_wicket and dismissed_player_id : 13
+
+  • Frequency of all dismissal types:
+    - Caught                   :  7,557
+    - Bowled                   :  1,775
+    - LBW                      :    709
+    - RunOut                   :    600
+    - Stump                    :    214
+    - Hit Wicket               :     17
+    - Retire Out               :      6
+    - Obstracting the field    :      2
+    - Obstructing the field    :      1
+
+  • Spelling Variants Detected for 'Obstructing': ['Obstracting the field', 'Obstructing the field']
+
+================================================================================
+EXECUTION STATUS & REPORT FINALIZATION (Completed at 2026-11-10 22:50:17)
+================================================================================
+PHASE 1 STATUS: COMPLETED SUCCESSFULLY (0 CRITICAL ERRORS)
+All findings calculated dynamically from data/raw/ without hardcoded metrics.

@@ -1,0 +1,173 @@
+================================================================================
+CRICKET PRESSURE INDEX — PHASE 3D PRESSURE RELIABILITY ENGINE AUDIT REPORT
+================================================================================
+Generated: 2026-11-11 06:27:59 UTC
+Specification: Approved Phase 3A Version 2.2 Master Methodology
+Outputs Produced:
+  1. data/processed/player_reliability_scores.csv
+  2. data/processed/reliability_sensitivity_analysis.csv
+================================================================================
+
+1. DATASET INTEGRITY & ROW COUNTS
+--------------------------------------------------------------------------------
+  • Total Players Evaluated                     : 1,420
+    - Batters Evaluated                         : 824
+    - Bowlers Evaluated                         : 596
+  • Total Qualified Players (Strict Match Cutoff): 210
+    - Qualified Batters (>=40 balls, >=6 PSR matches, >=120 career): 98 (11.89% of all batters)
+    - Qualified Bowlers (>=36 balls, >=6 PSR matches, >=120 career): 112 (18.79% of all bowlers)
+  • Player-Role Uniqueness (player_id, role)    : 0 duplicates (100% Unique)
+
+2. UNWEIGHTED & EXPOSURE-WEIGHTED PRESSURE SUCCESS RATE AUDIT
+--------------------------------------------------------------------------------
+  • Exact Equations Implemented:
+    - Raw PSR: PSR_i = (1 / M_i) * sum(I(Net_Match_DVA > 0.0))
+    - Exposure-Weighted PSR: PSR_exp,i = sum(Exposure_m * I(Net_Match_DVA > 0.0)) / sum(Exposure_m)
+    - Batter Match Eligibility  : >= 3 pressure balls faced OR dismissed under pressure
+    - Bowler Match Eligibility  : >= 6 legal pressure balls bowled (at least 1 full pressure over)
+    - Batter Relative Weighting : 18-ball effort receives exactly 6.00x the weight of a 3-ball cameo (18/3 = 6.00)
+    - Bowler Relative Weighting : 18-ball effort receives exactly 3.00x the weight of a 6-ball spell (18/6 = 3.00)
+    - Zero-Exposure Handling    : Observations with 0 exposure return NaN / 0 weight; 0 risk of division-by-zero
+  • Boundedness Verification:
+    - Min Raw PSR: 0.0000 >= 0.00 | Max Raw PSR: 1.0000 <= 1.00
+    - Min Exp PSR: 0.0000 >= 0.00 | Max Exp PSR: 1.0000 <= 1.00
+
+3. MATCH VOLATILITY & STABILIZER KAPPA AUDIT
+--------------------------------------------------------------------------------
+  • Stabilizer Equation: kappa_i = 1.0 - 0.25 * tanh(sigma_i,match / IQR_cohort)
+  • Batters Cohort Denominator (IQR_cohort)      : 2.3831
+  • Bowlers Cohort Denominator (IQR_cohort)      : 2.2497
+  • Fallback Rules Adherence:
+    - Rule 1 (IQR <= 10^-6): Fallback to league SD (Not triggered, empirical IQR > 2.24)
+    - Rule 2 (N_qual < 10) : Fallback to IQR = 0.42 (Not triggered, N_qual = 98 and 112)
+    - Rule 3 (M_i < 2)     : Assign kappa = 0.7500 (Applied to 785 players with <2 qualifying matches)
+    - Rule 4 (sigma == 0.0): Assign kappa = 1.0000 (Applied to 5 players with zero variance)
+  • Boundedness Verification:
+    - Min Kappa: 0.7500 >= 0.7500 | Max Kappa: 1.0000 <= 1.0000
+
+4. EMPIRICAL BAYES SHRINKAGE & SENSITIVITY GRID AUDIT
+--------------------------------------------------------------------------------
+  • Shrinkage Equation: theta*_i = (N_i / (N_i + K)) * theta_hat_i + (K / (N_i + K)) * mu_prior
+  • Operational Baseline Anchors: K_batter = 50 balls, K_bowler = 48 balls
+  • Population Priors (Qualified Cohort):
+    - Batters Prior Mean Exp-Weighted PSR (mu)   : 0.4316
+    - Batters Prior Mean Delta Strike Rate (mu)  : +11.19
+    - Bowlers Prior Mean Exp-Weighted PSR (mu)   : 0.6462
+    - Bowlers Prior Mean Clutch Suppression (mu) : +0.30 RPO
+
+  • Detailed Pairwise Top-10 Overlap Analysis:
+    A. Batters Sensitivity Matrix (K in [25, 50, 75, 100]):
+       - K= 25 vs K= 50  : Overlap = 9/10 (90.0%) | Out of K=50: {'Liam Livingstone'} | Into K=50: {'Jaker Ali Anik'}
+       - K= 50 vs K= 75  : Overlap = 10/10 (100.0%) | Identical Top 10
+       - K= 50 vs K=100  : Overlap = 9/10 (90.0%) | Out of K=50: {'Daryl Mitchell'} | Into K=100: {'David Miller'}
+       - K= 25 vs K= 75  : Overlap = 9/10 (90.0%) | Out: {'Liam Livingstone'} | In: {'Jaker Ali Anik'}
+       - K= 25 vs K=100  : Overlap = 8/10 (80.0%) | Out: {'Liam Livingstone', 'Daryl Mitchell'} | In: {'Jaker Ali Anik', 'David Miller'}
+       - K= 75 vs K=100  : Overlap = 9/10 (90.0%) | Out: {'Daryl Mitchell'} | In: {'David Miller'}
+
+    B. Bowlers Sensitivity Matrix (K in [25, 48, 75, 100]):
+       - K= 25 vs K= 48  : Overlap = 9/10 (90.0%) | Out of K=48: {'Akeal Hosein'} | Into K=48: {'Lockie Ferguson'}
+       - K= 48 vs K= 75  : Overlap = 9/10 (90.0%) | Out of K=48: {'Cameron Green'} | Into K=75: {'Shaheen Afridi'}
+       - K= 48 vs K=100  : Overlap = 9/10 (90.0%) | Out of K=48: {'Cameron Green'} | Into K=100: {'Shaheen Afridi'}
+       - K= 25 vs K= 75  : Overlap = 8/10 (80.0%) | Out: {'Akeal Hosein', 'Cameron Green'} | In: {'Shaheen Afridi', 'Lockie Ferguson'}
+       - K= 25 vs K=100  : Overlap = 8/10 (80.0%) | Out: {'Akeal Hosein', 'Cameron Green'} | In: {'Shaheen Afridi', 'Lockie Ferguson'}
+       - K= 75 vs K=100  : Overlap = 10/10 (100.0%) | Identical Top 10
+
+    -> VERDICT: Pairwise overlap ranges from 80.0% to 100.0% across the full 4x grid (K=25 to 100).
+       Relative to operational anchors (K=50 for batters, K=48 for bowlers), overlap is strictly 90.0% to 100.0%.
+
+5. SAMPLE MANUAL CALCULATIONS AUDIT (5 BATTERS & 5 BOWLERS)
+--------------------------------------------------------------------------------
+A. FIVE SAMPLE QUALIFIED BATTERS (Operational Anchor K = 50):
+  • Rinku Singh (ID 4708):
+    - Matches & Balls: Pressure Balls=199, Qual Matches=15, Successful Matches=9
+    - Raw PSR: 0.6000 | Exp-Weighted PSR: 0.7929
+    - Volatility Sigma: 8.8166 | IQR Denom: 2.3831 -> Kappa: 0.7503
+    - Shrinkage (K=50): w_N=0.7992, w_K=0.2008 -> Shrunk Exp PSR: 0.7203
+    - Reliability Score: 0.7203 * 0.7503 = 0.5405
+    - Sensitivity Across K: Rank(K=25)=2, Rank(K=50)=1, Rank(K=75)=1, Rank(K=100)=1 (Shift=1)
+
+  • Suryakumar Yadav (ID 1699):
+    - Matches & Balls: Pressure Balls=85, Qual Matches=10, Successful Matches=6
+    - Raw PSR: 0.6000 | Exp-Weighted PSR: 0.8519
+    - Volatility Sigma: 5.9515 | IQR Denom: 2.3831 -> Kappa: 0.7534
+    - Shrinkage (K=50): w_N=0.6296, w_K=0.3704 -> Shrunk Exp PSR: 0.6962
+    - Reliability Score: 0.6962 * 0.7534 = 0.5245
+    - Sensitivity Across K: Rank(K=25)=1, Rank(K=50)=2, Rank(K=75)=3, Rank(K=100)=5 (Shift=4)
+
+  • Tim David (ID 6396):
+    - Matches & Balls: Pressure Balls=249, Qual Matches=24, Successful Matches=16
+    - Raw PSR: 0.6667 | Exp-Weighted PSR: 0.7247
+    - Volatility Sigma: 7.8551 | IQR Denom: 2.3831 -> Kappa: 0.7507
+    - Shrinkage (K=50): w_N=0.8328, w_K=0.1672 -> Shrunk Exp PSR: 0.6757
+    - Reliability Score: 0.6757 * 0.7507 = 0.5072
+    - Sensitivity Across K: Rank(K=25)=9, Rank(K=50)=5, Rank(K=75)=4, Rank(K=100)=2 (Shift=7)
+
+  • Sherfane Rutherford (ID 6725):
+    - Matches & Balls: Pressure Balls=114, Qual Matches=11, Successful Matches=7
+    - Raw PSR: 0.6364 | Exp-Weighted PSR: 0.8158
+    - Volatility Sigma: 8.0532 | IQR Denom: 2.3831 -> Kappa: 0.7506
+    - Shrinkage (K=50): w_N=0.6951, w_K=0.3049 -> Shrunk Exp PSR: 0.6987
+    - Reliability Score: 0.6987 * 0.7506 = 0.5244
+    - Sensitivity Across K: Rank(K=25)=3, Rank(K=50)=3, Rank(K=75)=2, Rank(K=100)=3 (Shift=1)
+
+  • Dhruv Jurel (ID 7260):
+    - Matches & Balls: Pressure Balls=94, Qual Matches=8, Successful Matches=5
+    - Raw PSR: 0.6250 | Exp-Weighted PSR: 0.8090
+    - Volatility Sigma: 5.4398 | IQR Denom: 2.3831 -> Kappa: 0.7551
+    - Shrinkage (K=50): w_N=0.6528, w_K=0.3472 -> Shrunk Exp PSR: 0.6779
+    - Reliability Score: 0.6779 * 0.7551 = 0.5119
+    - Sensitivity Across K: Rank(K=25)=4, Rank(K=50)=4, Rank(K=75)=6, Rank(K=100)=6 (Shift=2)
+
+B. FIVE SAMPLE QUALIFIED BOWLERS (Operational Anchor K = 48):
+  • Mohammad Nawaz (ID 2490):
+    - Matches & Balls: Legal Balls=115, Qual Matches=12, Successful Matches=12
+    - Raw PSR: 1.0000 | Exp-Weighted PSR: 1.0000
+    - Volatility Sigma: 4.7934 | IQR Denom: 2.2497 -> Kappa: 0.7570
+    - Shrinkage (K=48): w_N=0.7055, w_K=0.2945 -> Shrunk Exp PSR: 0.8958
+    - Reliability Score: 0.8958 * 0.7570 = 0.6781
+    - Sensitivity Across K: Rank(K=25)=1, Rank(K=48)=1.0, Rank(K=75)=1, Rank(K=100)=1 (Shift=0)
+
+  • Shadab Khan (ID 4926):
+    - Matches & Balls: Legal Balls=104, Qual Matches=10, Successful Matches=10
+    - Raw PSR: 1.0000 | Exp-Weighted PSR: 1.0000
+    - Volatility Sigma: 5.0671 | IQR Denom: 2.2497 -> Kappa: 0.7555
+    - Shrinkage (K=48): w_N=0.6842, w_K=0.3158 -> Shrunk Exp PSR: 0.8883
+    - Reliability Score: 0.8883 * 0.7555 = 0.6711
+    - Sensitivity Across K: Rank(K=25)=2, Rank(K=48)=2.0, Rank(K=75)=2, Rank(K=100)=3 (Shift=1)
+
+  • Abrar Ahmed (ID 5979):
+    - Matches & Balls: Legal Balls=136, Qual Matches=14, Successful Matches=13
+    - Raw PSR: 0.9286 | Exp-Weighted PSR: 0.9528
+    - Volatility Sigma: 4.3509 | IQR Denom: 2.2497 -> Kappa: 0.7602
+    - Shrinkage (K=48): w_N=0.7391, w_K=0.2609 -> Shrunk Exp PSR: 0.8728
+    - Reliability Score: 0.8728 * 0.7602 = 0.6635
+    - Sensitivity Across K: Rank(K=25)=4, Rank(K=48)=3.0, Rank(K=75)=3, Rank(K=100)=2 (Shift=2)
+
+  • Washington Sundar (ID 4823):
+    - Matches & Balls: Legal Balls=74, Qual Matches=6, Successful Matches=6
+    - Raw PSR: 1.0000 | Exp-Weighted PSR: 1.0000
+    - Volatility Sigma: 4.0510 | IQR Denom: 2.2497 -> Kappa: 0.7633
+    - Shrinkage (K=48): w_N=0.6066, w_K=0.3934 -> Shrunk Exp PSR: 0.8608
+    - Reliability Score: 0.8608 * 0.7633 = 0.6570
+    - Sensitivity Across K: Rank(K=25)=3, Rank(K=48)=4.0, Rank(K=75)=4, Rank(K=100)=4 (Shift=1)
+
+  • Arshdeep Singh (ID 6464):
+    - Matches & Balls: Legal Balls=406, Qual Matches=43, Successful Matches=25
+    - Raw PSR: 0.5814 | Exp-Weighted PSR: 0.6181
+    - Volatility Sigma: 6.6995 | IQR Denom: 2.2497 -> Kappa: 0.7513
+    - Shrinkage (K=48): w_N=0.8943, w_K=0.1057 -> Shrunk Exp PSR: 0.6211
+    - Reliability Score: 0.6211 * 0.7513 = 0.4666
+    - Sensitivity Across K: Rank(K=25)=64, Rank(K=48)=66.0, Rank(K=75)=68, Rank(K=100)=68 (Shift=4)
+
+6. METHODOLOGY GOVERNANCE & REPRODUCIBILITY
+--------------------------------------------------------------------------------
+  • Frozen Master Datasets Status : 100% UNTOUCHED AND IMMUTABLE.
+  • Phase 3C Preceding Datasets    : 100% PRESERVED.
+  • Reproducibility               : Deterministic algorithm; 0 stochastic components.
+  • Strict Qualification Guarantee: Only players with >= 6 qualifying PSR matches are in sensitivity analysis.
+  • Caveat on K Operational Value : K is presented as an operational baseline anchor derived
+    from match-level variance ratios; not a proven universal physical constant.
+
+================================================================================
+PHASE 3D PRESSURE RELIABILITY ENGINE AUDIT COMPLETE — ALL REQUIREMENTS SATISFIED
+================================================================================

@@ -1,0 +1,282 @@
+{
+  "total_matches": 371,
+  "total_deliveries": 87687,
+  "high_pressure_deliveries": 8630,
+  "pct_high_pressure": 9.84,
+  "total_players_evaluated": 601,
+  "total_batters_evaluated": 341,
+  "qualified_batters": 45,
+  "total_bowlers_evaluated": 260,
+  "qualified_bowlers": 53,
+  "top_batter": {
+    "player_id": 4708,
+    "name": "Rinku Singh",
+    "team": "Kolkata Knight Riders",
+    "reliability_score": 0.5583,
+    "exposure_weighted_psr": 0.8263,
+    "pressure_balls": 191
+  },
+  "top_bowler": {
+    "player_id": 2933,
+    "name": "Jasprit Bumrah",
+    "team": "Mumbai Indians",
+    "reliability_score": 0.6477,
+    "exposure_weighted_psr": 0.9464,
+    "pressure_legal_balls": 123
+  },
+  "tier_counts": {
+    "Low": 56338,
+    "Medium": 22719,
+    "High": 8630
+  },
+  "tier_pcts": {
+    "Low": 64.25,
+    "Medium": 25.91,
+    "High": 9.84
+  },
+  "innings_summary": {
+    "1": {
+      "total_deliveries": 45588,
+      "high_pressure_deliveries": 2684,
+      "pct_high_pressure": 5.89,
+      "mean_pi": 0.3329
+    },
+    "2": {
+      "total_deliveries": 42085,
+      "high_pressure_deliveries": 5932,
+      "pct_high_pressure": 14.1,
+      "mean_pi": 0.411
+    }
+  },
+  "phase_summary": {
+    "Death": {
+      "total_deliveries": 20042,
+      "high_pressure_deliveries": 5689,
+      "pct_high_pressure": 28.39,
+      "mean_pi": 0.5215
+    },
+    "Middle": {
+      "total_deliveries": 40292,
+      "high_pressure_deliveries": 2808,
+      "pct_high_pressure": 6.97,
+      "mean_pi": 0.3684
+    },
+    "Powerplay": {
+      "total_deliveries": 27353,
+      "high_pressure_deliveries": 133,
+      "pct_high_pressure": 0.49,
+      "mean_pi": 0.263
+    }
+  },
+  "season_summary": {
+    "2022": {
+      "total_matches": 74,
+      "total_deliveries": 17909,
+      "high_pressure_deliveries": 1766,
+      "pct_high_pressure": 9.86,
+      "mean_pi": 0.3864
+    },
+    "2023": {
+      "total_matches": 74,
+      "total_deliveries": 17863,
+      "high_pressure_deliveries": 1720,
+      "pct_high_pressure": 9.63,
+      "mean_pi": 0.3735
+    },
+    "2024": {
+      "total_matches": 71,
+      "total_deliveries": 17103,
+      "high_pressure_deliveries": 1869,
+      "pct_high_pressure": 10.93,
+      "mean_pi": 0.376
+    },
+    "2025": {
+      "total_matches": 74,
+      "total_deliveries": 17285,
+      "high_pressure_deliveries": 1612,
+      "pct_high_pressure": 9.33,
+      "mean_pi": 0.3578
+    },
+    "2026": {
+      "total_matches": 74,
+      "total_deliveries": 17527,
+      "high_pressure_deliveries": 1663,
+      "pct_high_pressure": 9.49,
+      "mean_pi": 0.3585
+    }
+  },
+  "team_summary": {
+    "Chennai Super Kings": {
+      "total_deliveries": 8692,
+      "high_pressure_deliveries": 853,
+      "pct_high_pressure": 9.81
+    },
+    "Mumbai Indians": {
+      "total_deliveries": 8854,
+      "high_pressure_deliveries": 961,
+      "pct_high_pressure": 10.85
+    },
+    "Rajasthan Royals": {
+      "total_deliveries": 9107,
+      "high_pressure_deliveries": 721,
+      "pct_high_pressure": 7.92
+    },
+    "Punjab Kings": {
+      "total_deliveries": 8778,
+      "high_pressure_deliveries": 901,
+      "pct_high_pressure": 10.26
+    },
+    "Royal Challengers Bengaluru": {
+      "total_deliveries": 9025,
+      "high_pressure_deliveries": 709,
+      "pct_high_pressure": 7.86
+    },
+    "Delhi Capitals": {
+      "total_deliveries": 8384,
+      "high_pressure_deliveries": 1171,
+      "pct_high_pressure": 13.97
+    },
+    "Kolkata Knight Riders": {
+      "total_deliveries": 7905,
+      "high_pressure_deliveries": 851,
+      "pct_high_pressure": 10.77
+    },
+    "Sunrisers Hyderabad": {
+      "total_deliveries": 8710,
+      "high_pressure_deliveries": 947,
+      "pct_high_pressure": 10.87
+    },
+    "Gujarat Titans": {
+      "total_deliveries": 9379,
+      "high_pressure_deliveries": 759,
+      "pct_high_pressure": 8.09
+    },
+    "Lucknow Super Giants": {
+      "total_deliveries": 8853,
+      "high_pressure_deliveries": 757,
+      "pct_high_pressure": 8.55
+    }
+  },
+  "top_tense_situations": [
+    {
+      "match_id": 31291,
+      "match_date": "2024-05-24",
+      "season": "2024",
+      "home_team": "Sunrisers Hyderabad",
+      "away_team": "Rajasthan Royals",
+      "result": "Sunrisers Hyderabad Won by 36 runs",
+      "death_balls": 31,
+      "death_high_press_balls": 31,
+      "death_mean_pi": 0.9449,
+      "max_pi": 1.0
+    },
+    {
+      "match_id": 21584,
+      "match_date": "2023-05-24",
+      "season": "2023",
+      "home_team": "Lucknow Super Giants",
+      "away_team": "Mumbai Indians",
+      "result": "Mumbai Indians won by 81 runs",
+      "death_balls": 9,
+      "death_high_press_balls": 9,
+      "death_mean_pi": 0.9409,
+      "max_pi": 1.0
+    },
+    {
+      "match_id": 40767,
+      "match_date": "2025-06-03",
+      "season": "2025",
+      "home_team": "Royal Challengers Bengaluru",
+      "away_team": "Punjab Kings",
+      "result": "Royal Challengers Bengaluru Won by 6 runs",
+      "death_balls": 31,
+      "death_high_press_balls": 31,
+      "death_mean_pi": 0.9122,
+      "max_pi": 1.0
+    },
+    {
+      "match_id": 50351,
+      "match_date": "2026-04-20",
+      "season": "2026",
+      "home_team": "Gujarat Titans",
+      "away_team": "Mumbai Indians",
+      "result": "Mumbai Indians Won by 99 runs",
+      "death_balls": 6,
+      "death_high_press_balls": 6,
+      "death_mean_pi": 0.8811,
+      "max_pi": 0.8959
+    },
+    {
+      "match_id": 50370,
+      "match_date": "2026-05-06",
+      "season": "2026",
+      "home_team": "Sunrisers Hyderabad",
+      "away_team": "Punjab Kings",
+      "result": "Sunrisers Hyderabad Won by 33 runs",
+      "death_balls": 33,
+      "death_high_press_balls": 33,
+      "death_mean_pi": 0.8382,
+      "max_pi": 0.8968
+    },
+    {
+      "match_id": 31248,
+      "match_date": "2024-04-15",
+      "season": "2024",
+      "home_team": "Royal Challengers Bengaluru",
+      "away_team": "Sunrisers Hyderabad",
+      "result": "Sunrisers Hyderabad Won by 25 runs",
+      "death_balls": 36,
+      "death_high_press_balls": 36,
+      "death_mean_pi": 0.8336,
+      "max_pi": 0.8968
+    },
+    {
+      "match_id": 15188,
+      "match_date": "2022-05-25",
+      "season": "2022",
+      "home_team": "Lucknow Super Giants",
+      "away_team": "Royal Challengers Bengaluru",
+      "result": "Royal Challengers Bengaluru Won by 14 Runs",
+      "death_balls": 37,
+      "death_high_press_balls": 37,
+      "death_mean_pi": 0.8334,
+      "max_pi": 1.0
+    },
+    {
+      "match_id": 31286,
+      "match_date": "2024-05-18",
+      "season": "2024",
+      "home_team": "Royal Challengers Bengaluru",
+      "away_team": "Chennai Super Kings",
+      "result": "Royal Challengers Bengaluru Won by 27 runs",
+      "death_balls": 32,
+      "death_high_press_balls": 32,
+      "death_mean_pi": 0.8329,
+      "max_pi": 0.8968
+    },
+    {
+      "match_id": 50373,
+      "match_date": "2026-05-09",
+      "season": "2026",
+      "home_team": "Rajasthan Royals",
+      "away_team": "Gujarat Titans",
+      "result": "Gujarat Titans Won by 77 runs",
+      "death_balls": 10,
+      "death_high_press_balls": 10,
+      "death_mean_pi": 0.8308,
+      "max_pi": 0.8531
+    },
+    {
+      "match_id": 31276,
+      "match_date": "2024-05-09",
+      "season": "2024",
+      "home_team": "Punjab Kings",
+      "away_team": "Royal Challengers Bengaluru",
+      "result": "Royal Challengers Bengaluru Won by 60 runs",
+      "death_balls": 13,
+      "death_high_press_balls": 13,
+      "death_mean_pi": 0.8306,
+      "max_pi": 0.8805
+    }
+  ]
+}

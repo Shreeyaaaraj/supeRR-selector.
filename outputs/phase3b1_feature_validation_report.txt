@@ -1,0 +1,104 @@
+================================================================================
+CRICKET PRESSURE INDEX — PHASE 3B.1 FEATURE VALIDATION AUDIT REPORT
+================================================================================
+Generated: 2026-11-11 05:22:34 UTC
+Output File: data/processed/engineered_deliveries.csv
+================================================================================
+
+1. DATASET INTEGRITY & ROW COUNTS
+--------------------------------------------------------------------------------
+  • Input Clean Deliveries  : 194,014
+  • Output Engineered Rows  : 194,014
+  • Row Discrepancy         : 0 (Exact 1:1 match)
+  • Engineered Features     : 67 columns
+  • Memory Usage (RAM)      : 243.97 MB
+
+2. UNIQUENESS & COMPOSITE KEY VALIDATION
+--------------------------------------------------------------------------------
+  • Duplicate (match_id, innings, overid, over_ball_num) : 0
+  • Duplicate (match_id, innings, innings_delivery_seq)   : 0
+  • Delivery Uniqueness                                   : 100% UNIQUE
+
+3. FOREIGN KEY RELATIONSHIP AUDIT
+--------------------------------------------------------------------------------
+  • Deliveries match_id not in clean_matches        : 0
+  • Matches comp_id not in clean_competitions       : 0
+  • Striker-match pairs not in clean_playing_eleven : 0
+  • Bowler-match pairs not in clean_playing_eleven  : 0
+
+4. DECOUPLED BALL COUNTING RECONCILIATION
+--------------------------------------------------------------------------------
+  • Batter Balls Faced (is_batter_ball_faced) : 186,540 (Expected: 186,540)
+  • Bowler Legal Balls (is_bowler_legal_ball) : 185,715 (Expected: 185,715)
+  • Wides (excluded from batter balls)        : 7,474 (Expected: 7,474)
+  • No-Balls (faced by batter, illegal bowl)  : 825 (Expected: 825)
+  • Penalty Delivery (faced by batter, legal) : 1 (Expected: 1)
+  • Statutory Equation Verification           :
+    - Batter Balls + Wides                    : 194,014 == 194,014
+    - Bowler Legal + Wides + No-Balls         : 194,014 == 194,014
+
+5. RUNS ATTRIBUTION & EXTRA PREVENTION RECONCILIATION
+--------------------------------------------------------------------------------
+  • Total Delivery Team Runs      : 272,672 (Expected: 272,672)
+  • Bowler Runs Conceded          : 269,418 (Expected: 269,418)
+  • Non-Bowler Extras             : 3,254 (Expected: 3,254)
+  • Total Runs off the Bat        : 261,119
+  • Mathematical Reconciliation   : 269418 + 3254 = 272672 == 272672 (0.00 Error)
+
+6. PRE-DELIVERY STATE INTEGRITY (ZERO LEAKAGE TEST)
+--------------------------------------------------------------------------------
+  • Opening Ball (seq=1) cum_innings_runs_pre max    : 0 (Must be 0)
+  • Opening Ball (seq=1) cum_innings_wickets_pre max : 0 (Must be 0)
+  • Opening Ball (seq=1) cum_legal_balls_pre max     : 0 (Must be 0)
+  • Legal delivery increment                         : min=1, max=1 (Must be exactly 1)
+  • Illegal delivery increment                       : max=0 (Must be exactly 0)
+
+7. DLS & SUPER OVER VALIDATION
+--------------------------------------------------------------------------------
+  • Super Over Deliveries Count                      : 26 (Expected: 26)
+  • Super Over Matches Identified                    : 4 matches
+  • Super Over Allocated Balls                       : [6] (Must be [6])
+  • DLS Matches Deliveries Count                     : 5,254
+  • DLS Matches Identified                           : 38 matches
+
+8. CONFIDENCE DIMENSIONS DISTRIBUTION
+--------------------------------------------------------------------------------
+  • Match-Margin Confidence:
+    - HIGH           : 152,170 deliveries (78.43%)
+    - MEDIUM         : 32,623 deliveries (16.81%)
+    - LOW            :  7,289 deliveries ( 3.76%)
+    - NOT_APPLICABLE :  1,932 deliveries ( 1.00%)
+
+  • Delivery-Level Running Score Confidence:
+    - HIGH           : 162,245 deliveries (83.63%)
+    - MEDIUM         : 22,548 deliveries (11.62%)
+    - LOW            :  7,289 deliveries ( 3.76%)
+    - NOT_APPLICABLE :  1,932 deliveries ( 1.00%)
+
+9. NULL VALUE CENSUS ACROSS CRITICAL FEATURES
+--------------------------------------------------------------------------------
+  • match_id                      : 0 nulls [OK]
+  • comp_id                       : 0 nulls [OK]
+  • innings                       : 0 nulls [OK]
+  • overid                        : 0 nulls [OK]
+  • over_ball_num                 : 0 nulls [OK]
+  • striker_id                    : 0 nulls [OK]
+  • bowler_id                     : 0 nulls [OK]
+  • is_batter_ball_faced          : 0 nulls [OK]
+  • is_bowler_legal_ball          : 0 nulls [OK]
+  • is_valid_wicket               : 0 nulls [OK]
+  • is_bowler_wicket              : 0 nulls [OK]
+  • bowler_runs_conceded          : 0 nulls [OK]
+  • non_bowler_extras             : 0 nulls [OK]
+  • cum_innings_runs_pre          : 0 nulls [OK]
+  • cum_innings_wickets_pre       : 0 nulls [OK]
+  • cum_legal_balls_pre           : 0 nulls [OK]
+  • legal_balls_remaining_pre     : 0 nulls [OK]
+  • current_run_rate_pre          : 0 nulls [OK]
+  • [Innings 2] target_runs nulls     : 0 [OK]
+  • [Innings 2] runs_needed_pre nulls : 0 [OK]
+  • [Innings 2] rrr_pre nulls         : 0 [OK]
+
+================================================================================
+PHASE 3B.1 VALIDATION AUDIT COMPLETE — ALL METRICS SATISFIED
+================================================================================
