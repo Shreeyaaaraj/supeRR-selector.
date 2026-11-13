@@ -96,9 +96,17 @@ VARIANT_STYLES = {
 }
 
 
-def render_hero_header():
+def render_hero_header(overview_data=None):
     """Render the flagship hero section with clean, sophisticated editorial studio layout."""
-    html = """
+    if overview_data is not None and isinstance(overview_data, dict):
+        total_m = overview_data.get('total_matches', 853)
+        tag_str = "IPL & T20I 2022–2026" if total_m > 371 else "IPL 2022–2026"
+        badge_str = f"{total_m:,} Matches · 5 Seasons"
+    else:
+        tag_str = "IPL 2022–2026"
+        badge_str = "371 Matches · 5 Seasons"
+
+    html = f"""
     <div style="background: #FFFFFF; border: 1px solid #ECEAF3; border-top: 3px solid #7964B5; border-radius: 10px; padding: 18px 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(37, 35, 58, 0.03);">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
             <div>
@@ -109,15 +117,15 @@ def render_hero_header():
                     Read the pressure. Find the performers.
                 </h1>
                 <div style="font-size: 14.5px; color: #77758A; margin-top: 4px; line-height: 1.45; font-weight: 400; font-family: 'Plus Jakarta Sans', sans-serif;">
-                    Discover reliable IPL players when the game is on the line. A smarter way to evaluate cricket performance under pressure.
+                    Discover reliable players when the game is on the line. A smarter way to evaluate cricket performance under pressure.
                 </div>
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
                 <span style="background: #F8F8FC; color: #77758A; border: 1px solid #ECEAF3; font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 6px; font-family: 'Plus Jakarta Sans', sans-serif;">
-                    IPL 2022–2026
+                    {tag_str}
                 </span>
                 <span style="background: #F0ECF8; color: #7964B5; border: 1px solid #DED6F2; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; font-family: 'Plus Jakarta Sans', sans-serif;">
-                    371 Matches · 5 Seasons
+                    {badge_str}
                 </span>
             </div>
         </div>

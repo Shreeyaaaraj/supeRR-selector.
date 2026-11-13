@@ -857,6 +857,34 @@ def set_batter_active_tab(tab_name):
 def set_bowler_active_tab(tab_name):
     st.session_state.bowler_active_tab = tab_name
 
+# -----------------------------------------------------------------------------
+# Load Datasets (Early load for dynamic sidebar & dashboard components)
+# -----------------------------------------------------------------------------
+try:
+    overview_data = load_pressure_overview()
+    df_players = load_all_players()
+    df_top_bat = load_top10_batters()
+    df_top_bowl = load_top10_bowlers()
+except Exception as e:
+    st.error(f"Error loading dashboard datasets: {str(e)}")
+    st.stop()
+
+# Derive dynamic cohort counts and labels
+n_qual_bat = int(((df_players['role'] == 'batter') & df_players['is_qualified']).sum())
+n_tot_bat = int((df_players['role'] == 'batter').sum())
+n_qual_bowl = int(((df_players['role'] == 'bowler') & df_players['is_qualified']).sum())
+n_tot_bowl = int((df_players['role'] == 'bowler').sum())
+
+opt_qual_bat = f"Qualified Only (N={n_qual_bat})"
+opt_all_bat = f"All Batters (N={n_tot_bat})"
+opt_qual_bowl = f"Qualified Only (N={n_qual_bowl})"
+opt_all_bowl = f"All Bowlers (N={n_tot_bowl})"
+
+opt_sq_bat = f"Qualified Batters Only (N={n_qual_bat})"
+opt_sq_all_bat = f"All Batters (N={n_tot_bat})"
+opt_sq_bowl = f"Qualified Bowlers Only (N={n_qual_bowl})"
+opt_sq_all_bowl = f"All Bowlers (N={n_tot_bowl})"
+
 if "rankings_active_tab" not in st.session_state:
     st.session_state.rankings_active_tab = "Batters Leaderboard"
 
@@ -866,8 +894,10 @@ if "rank_bat_search_input" not in st.session_state:
 if "rank_team_bat" not in st.session_state:
     st.session_state.rank_team_bat = "All Franchises"
 
-if "rank_qual_bat" not in st.session_state:
-    st.session_state.rank_qual_bat = "Qualified Only (N=45)"
+if "rank_qual_bat" not in st.session_state or not str(st.session_state.rank_qual_bat).startswith("Qualified"):
+    st.session_state.rank_qual_bat = opt_qual_bat
+else:
+    st.session_state.rank_qual_bat = opt_qual_bat
 
 if "rank_bowl_search_input" not in st.session_state:
     st.session_state.rank_bowl_search_input = ""
@@ -875,8 +905,10 @@ if "rank_bowl_search_input" not in st.session_state:
 if "rank_team_bowl" not in st.session_state:
     st.session_state.rank_team_bowl = "All Franchises"
 
-if "rank_qual_bowl" not in st.session_state:
-    st.session_state.rank_qual_bowl = "Qualified Only (N=53)"
+if "rank_qual_bowl" not in st.session_state or not str(st.session_state.rank_qual_bowl).startswith("Qualified"):
+    st.session_state.rank_qual_bowl = opt_qual_bowl
+else:
+    st.session_state.rank_qual_bowl = opt_qual_bowl
 
 if "ps_search_box" not in st.session_state:
     st.session_state.ps_search_box = ""
@@ -902,14 +934,28 @@ if "rank_bowl_sel_box" not in st.session_state:
 if "ps_select_player_box" not in st.session_state:
     st.session_state.ps_select_player_box = 0
 
-if "sq_bat_cohort_select" not in st.session_state:
-    st.session_state.sq_bat_cohort_select = "Qualified Only (N=45)"
+if "sq_bat_cohort_select" not in st.session_state or not str(st.session_state.sq_bat_cohort_select).startswith("Qualified"):
+    st.session_state.sq_bat_cohort_select = opt_sq_bat
+else:
+    st.session_state.sq_bat_cohort_select = opt_sq_bat
+
+if "sq_bat_cohort_val" not in st.session_state or not str(st.session_state.sq_bat_cohort_val).startswith("Qualified"):
+    st.session_state.sq_bat_cohort_val = opt_sq_bat
+else:
+    st.session_state.sq_bat_cohort_val = opt_sq_bat
 
 if "sq_bat_hl_select" not in st.session_state:
     st.session_state.sq_bat_hl_select = "(None)"
 
-if "sq_bowl_cohort_select" not in st.session_state:
-    st.session_state.sq_bowl_cohort_select = "Qualified Only (N=53)"
+if "sq_bowl_cohort_select" not in st.session_state or not str(st.session_state.sq_bowl_cohort_select).startswith("Qualified"):
+    st.session_state.sq_bowl_cohort_select = opt_sq_bowl
+else:
+    st.session_state.sq_bowl_cohort_select = opt_sq_bowl
+
+if "sq_bowl_cohort_val" not in st.session_state or not str(st.session_state.sq_bowl_cohort_val).startswith("Qualified"):
+    st.session_state.sq_bowl_cohort_val = opt_sq_bowl
+else:
+    st.session_state.sq_bowl_cohort_val = opt_sq_bowl
 
 if "sq_bowl_hl_select" not in st.session_state:
     st.session_state.sq_bowl_hl_select = "(None)"
@@ -946,11 +992,11 @@ def navigate_to(page_name, player_id=None, role=None, from_tab=None, origin_page
         "ps_select_player_box": st.session_state.get("ps_selected_idx", 0),
         "rank_bat_search_input": st.session_state.get("rank_bat_search_input", ""),
         "rank_team_bat": st.session_state.get("rank_team_bat", "All Franchises"),
-        "rank_qual_bat": st.session_state.get("rank_qual_bat", "Qualified Only (N=45)"),
+        "rank_qual_bat": st.session_state.get("rank_qual_bat", opt_qual_bat),
         "rank_bat_sel_box": st.session_state.get("rank_bat_sel_box", None),
         "rank_bowl_search_input": st.session_state.get("rank_bowl_search_input", ""),
         "rank_team_bowl": st.session_state.get("rank_team_bowl", "All Franchises"),
-        "rank_qual_bowl": st.session_state.get("rank_qual_bowl", "Qualified Only (N=53)"),
+        "rank_qual_bowl": st.session_state.get("rank_qual_bowl", opt_qual_bowl),
         "rank_bowl_sel_box": st.session_state.get("rank_bowl_sel_box", None),
         "ov_select_bat": st.session_state.get("ov_select_bat", None),
         "ov_select_bowl": st.session_state.get("ov_select_bowl", None),
@@ -1181,28 +1227,17 @@ with st.sidebar:
                 navigate_to(p, origin_page=st.session_state.page)
     
     # Subtle Light Studio Footer
-    render_html("""
+    render_html(f"""
         <div style="padding: 14px 6px 6px 6px; border-top: 1px solid #ECEAF3; margin-top: 24px; font-family: 'Plus Jakarta Sans', sans-serif;">
             <div style="font-size: 0.78rem; font-weight: 600; color: #25233A; margin-bottom: 2px;">
                 SupeRR Selector Studio
             </div>
             <div style="font-size: 0.70rem; color: #77758A; line-height: 1.45; font-weight: 500;">
-                IPL 2022–2026<br>
-                371 Matches · 87,687 Deliveries
+                Seasons 2022–2026<br>
+                {overview_data.get('total_matches', 853):,} Matches · {overview_data.get('total_deliveries', 173315):,} Deliveries
             </div>
         </div>
     """)
-
-
-# Load Datasets
-try:
-    overview_data = load_pressure_overview()
-    df_players = load_all_players()
-    df_top_bat = load_top10_batters()
-    df_top_bowl = load_top10_bowlers()
-except Exception as e:
-    st.error(f"Error loading dashboard datasets: {str(e)}")
-    st.stop()
 
 
 # -----------------------------------------------------------------------------
@@ -1363,7 +1398,7 @@ if is_page_navigation:
 # -----------------------------------------------------------------------------
 if st.session_state.page == "Overview":
     # Clean Editorial Hero Section
-    render_hero_header()
+    render_hero_header(overview_data)
     
     # Exactly 4 Polished Overview KPI Cards
     col1, col2, col3, col4 = st.columns(4)
@@ -1372,7 +1407,8 @@ if st.session_state.page == "Overview":
     with col2:
         metric_card("Deliveries Analysed", f"{overview_data['total_deliveries']:,}", "Ball-by-ball leverage evaluated", variant='blue', icon='activity')
     with col3:
-        metric_card("Players Evaluated", f"{overview_data.get('total_players_evaluated', 601):,}", "341 Batters (45 Qual) · 260 Bowlers (53 Qual)", variant='purple', icon='users')
+        players_sub = overview_data.get('players_evaluated_sub', f"{overview_data.get('total_batters_evaluated', 341)} Batters ({overview_data.get('qualified_batters', 45)} Qual) · {overview_data.get('total_bowlers_evaluated', 260)} Bowlers ({overview_data.get('qualified_bowlers', 53)} Qual)")
+        metric_card("Players Evaluated", f"{overview_data.get('total_players_evaluated', 601):,}", players_sub, variant='purple', icon='users')
     with col4:
         metric_card("High-Pressure Deliveries", f"{overview_data['high_pressure_deliveries']:,}", f"{overview_data['pct_high_pressure']}% with PI >= 0.65", variant='pink', icon='pulse')
     
@@ -1485,7 +1521,8 @@ if st.session_state.page == "Overview":
     render_html("<div style='margin-top: 24px;'></div>")
 
     # Section C & D: PRESSURE OVERVIEW & SEASON TRENDS
-    render_html("""
+    tournament_sub = overview_data.get('tournament_context_sub', f"Analysis of {overview_data['total_deliveries']:,} ball leverage distributions and season-by-season pressure trends across IPL 2022–2026.")
+    render_html(f"""
         <div style="margin-top: 16px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #ECEAF3; font-family: 'Plus Jakarta Sans', sans-serif;">
             <div style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #7964B5; margin-bottom: 4px;">
                 Tournament Empirical Context
@@ -1494,7 +1531,7 @@ if st.session_state.page == "Overview":
                 Pressure Overview & Season Trends
             </h2>
             <div style="font-size: 0.86rem; color: #4E4A62; font-weight: 500; margin-top: 2px;">
-                Analysis of 87,687 ball leverage distributions and season-by-season pressure trends across IPL 2022–2026.
+                {tournament_sub}
             </div>
         </div>
     """)
@@ -1506,18 +1543,26 @@ if st.session_state.page == "Overview":
     with col_ov_ch1:
         fig_tiers = plot_pressure_tier_distribution(overview_data['tier_counts'], overview_data['tier_pcts'])
         st.plotly_chart(fig_tiers, use_container_width=True)
-        st.caption("Distribution of 87,687 legal tournament deliveries into Low (PI < 0.40), Medium (0.40–0.65), and High (PI >= 0.65) leverage tiers.")
+        tier_cap = overview_data.get('tier_caption', f"Distribution of {overview_data['total_deliveries']:,} legal tournament deliveries into Low (PI < 0.40), Medium (0.40–0.65), and High (PI >= 0.65) leverage tiers.")
+        st.caption(tier_cap)
     with col_ov_ch2:
         fig_seasons = plot_season_trends(overview_data['season_summary'])
         st.plotly_chart(fig_seasons, use_container_width=True)
-        st.caption("Tournament trend across IPL editions showing total deliveries and the volume of critical high-pressure deliveries.")
+        season_cap = overview_data.get('season_caption', "Tournament trend across IPL editions showing total deliveries and the volume of critical high-pressure deliveries.")
+        st.caption(season_cap)
     render_html("<div style='margin-top: 18px;'></div>")
+
+    top_b = overview_data.get('top_batter', {})
+    top_bw = overview_data.get('top_bowler', {})
+    default_attrition = "<strong>Rigorous Sample Attrition:</strong> Only 13.2% of evaluated batters (45/341) and 20.4% of evaluated bowlers (53/260) satisfy the 3-tier sample threshold (minimum 40/36 pressure balls, 6 qualifying matches, 120 career balls)."
+    default_anchors = f"<strong>Elite Stability Anchors:</strong> {top_b.get('name', 'Rinku Singh')} (Reliability {top_b.get('reliability_score', 0.5583):.4f}, {top_b.get('team', 'KKR')}) and {top_bw.get('name', 'Jasprit Bumrah')} (Reliability {top_bw.get('reliability_score', 0.6477):.4f}, {top_bw.get('team', 'MI')}) maintain locked Rank 1 positions across all sensitivity shrinkage anchors (K in [25, 100])."
+
     insights = [
-            "<strong>Run-Chase Pressure Concentration:</strong> Chasing targets in the 2nd innings produces 2.4x higher pressure ball concentration (14.1% vs 5.9%) than 1st innings target setting, driven by terminal balls remaining and dynamic required run rates.",
-            "<strong>Death-Overs Climax Leverage:</strong> The Death Phase (overs 16–20) concentrates over 72% of all match-deciding high-pressure deliveries across the 5 tournament editions.",
-            "<strong>Rigorous Sample Attrition:</strong> Only 13.2% of evaluated batters (45/341) and 20.4% of evaluated bowlers (53/260) satisfy the 3-tier sample threshold (minimum 40/36 pressure balls, 6 qualifying matches, 120 career balls).",
-            "<strong>Elite Stability Anchors:</strong> Rinku Singh (Reliability 0.5583, KKR) and Jasprit Bumrah (Reliability 0.6477, MI) maintain locked Rank 1 positions across all sensitivity shrinkage anchors (K in [25, 100])."
-        ]
+        "<strong>Run-Chase Pressure Concentration:</strong> Chasing targets in the 2nd innings produces 2.4x higher pressure ball concentration (14.1% vs 5.9%) than 1st innings target setting, driven by terminal balls remaining and dynamic required run rates.",
+        "<strong>Death-Overs Climax Leverage:</strong> The Death Phase (overs 16–20) concentrates over 72% of all match-deciding high-pressure deliveries across the tournament editions.",
+        overview_data.get('sample_attrition_text', default_attrition),
+        overview_data.get('elite_anchors_text', default_anchors)
+    ]
     insight_box("Key Empirical Insights & Strategic Observations", insights, variant='lavender')
 
 
@@ -1571,12 +1616,12 @@ elif st.session_state.page == "Rankings":
             all_bat_teams = ["All Franchises"] + sorted(list(set([t for teams in df_players[df_players['role'] == 'batter']['ipl_franchises'].dropna() for t in teams.split(", ")])))
             team_filter_bat = st.selectbox("Franchise", all_bat_teams, key="rank_team_bat")
         with col_ctl3:
-            qual_filter_bat = st.selectbox("Qualification Status", ["Qualified Only (N=45)", "All Batters (N=341)", "Non-Qualified Only"], key="rank_qual_bat")
+            qual_filter_bat = st.selectbox("Qualification Status", [opt_qual_bat, opt_all_bat, "Non-Qualified Only"], key="rank_qual_bat")
         with col_ctl4:
             if st.button("Clear", key="rank_clear_bat_btn", use_container_width=True):
                 st.session_state.rank_bat_search_input = ""
                 st.session_state.rank_team_bat = "All Franchises"
-                st.session_state.rank_qual_bat = "Qualified Only (N=45)"
+                st.session_state.rank_qual_bat = opt_qual_bat
                 st.rerun()
 
         # Filter dataset
@@ -1707,8 +1752,8 @@ elif st.session_state.page == "Rankings":
 
             # Handle Reset or Pending Cohort triggers before widget instantiation
             if st.session_state.get("sq_bat_do_reset", False):
-                st.session_state.sq_bat_cohort_select = "Qualified Batters Only (N=45)"
-                st.session_state.sq_bat_cohort_val = "Qualified Batters Only (N=45)"
+                st.session_state.sq_bat_cohort_select = opt_sq_bat
+                st.session_state.sq_bat_cohort_val = opt_sq_bat
                 st.session_state.sq_bat_hl_select = 0
                 st.session_state.sq_bat_highlight_id = None
                 st.session_state.sq_bat_do_reset = False
@@ -1720,7 +1765,7 @@ elif st.session_state.page == "Rankings":
 
             # State initialization for Quadrant interactive controls
             if "sq_bat_cohort_val" not in st.session_state:
-                st.session_state.sq_bat_cohort_val = "Qualified Batters Only (N=45)"
+                st.session_state.sq_bat_cohort_val = opt_sq_bat
             if "sq_bat_highlight_id" not in st.session_state:
                 st.session_state.sq_bat_highlight_id = None
 
@@ -1728,7 +1773,7 @@ elif st.session_state.page == "Rankings":
             col_q1, col_q2, col_q3 = st.columns([2.8, 5.8, 1.4], vertical_alignment="bottom")
             
             with col_q1:
-                cohort_options = ["Qualified Batters Only (N=45)", "All Batters (N=341)"]
+                cohort_options = [opt_sq_bat, opt_sq_all_bat]
                 cohort_idx = cohort_options.index(st.session_state.sq_bat_cohort_val) if st.session_state.sq_bat_cohort_val in cohort_options else 0
                 sel_cohort_bat = st.selectbox(
                     "Quadrant Cohort",
@@ -1746,7 +1791,7 @@ elif st.session_state.page == "Rankings":
                 sq_cohort_bat = bat_pool.sort_values(['is_qualified', 'final_composite_score'], ascending=[False, False]).copy()
 
             with col_q2:
-                # Complete IPL batter dataset (N=341) options for searching & selecting
+                # Complete batter dataset options for searching & selecting
                 hl_options = [0] + bat_pool['player_id'].tolist()
                 cur_hl_id = st.session_state.sq_bat_highlight_id or 0
                 hl_pos = hl_options.index(cur_hl_id) if cur_hl_id in hl_options else 0
@@ -1966,12 +2011,12 @@ elif st.session_state.page == "Rankings":
             all_bowl_teams = ["All Franchises"] + sorted(list(set([t for teams in df_players[df_players['role'] == 'bowler']['ipl_franchises'].dropna() for t in teams.split(", ")])))
             team_filter_bowl = st.selectbox("Franchise", all_bowl_teams, key="rank_team_bowl")
         with col_ctl_bw3:
-            qual_filter_bowl = st.selectbox("Qualification Status", ["Qualified Only (N=53)", "All Bowlers (N=260)", "Non-Qualified Only"], key="rank_qual_bowl")
+            qual_filter_bowl = st.selectbox("Qualification Status", [opt_qual_bowl, opt_all_bowl, "Non-Qualified Only"], key="rank_qual_bowl")
         with col_ctl_bw4:
             if st.button("Clear", key="rank_clear_bowl_btn", use_container_width=True):
                 st.session_state.rank_bowl_search_input = ""
                 st.session_state.rank_team_bowl = "All Franchises"
-                st.session_state.rank_qual_bowl = "Qualified Only (N=53)"
+                st.session_state.rank_qual_bowl = opt_qual_bowl
                 st.rerun()
 
         # Filter dataset
@@ -2103,8 +2148,8 @@ elif st.session_state.page == "Rankings":
 
             # Handle Reset or Pending Cohort triggers before widget instantiation
             if st.session_state.get("sq_bowl_do_reset", False):
-                st.session_state.sq_bowl_cohort_select = "Qualified Bowlers Only (N=53)"
-                st.session_state.sq_bowl_cohort_val = "Qualified Bowlers Only (N=53)"
+                st.session_state.sq_bowl_cohort_select = opt_sq_bowl
+                st.session_state.sq_bowl_cohort_val = opt_sq_bowl
                 st.session_state.sq_bowl_hl_select = 0
                 st.session_state.sq_bowl_highlight_id = None
                 st.session_state.sq_bowl_do_reset = False
@@ -2116,7 +2161,7 @@ elif st.session_state.page == "Rankings":
 
             # State initialization for Bowler Quadrant controls
             if "sq_bowl_cohort_val" not in st.session_state:
-                st.session_state.sq_bowl_cohort_val = "Qualified Bowlers Only (N=53)"
+                st.session_state.sq_bowl_cohort_val = opt_sq_bowl
             if "sq_bowl_highlight_id" not in st.session_state:
                 st.session_state.sq_bowl_highlight_id = None
 
@@ -2124,7 +2169,7 @@ elif st.session_state.page == "Rankings":
             col_q_bw1, col_q_bw2, col_q_bw3 = st.columns([2.8, 5.8, 1.4], vertical_alignment="bottom")
             
             with col_q_bw1:
-                cohort_bw_options = ["Qualified Bowlers Only (N=53)", "All Bowlers (N=260)"]
+                cohort_bw_options = [opt_sq_bowl, opt_sq_all_bowl]
                 cohort_bw_idx = cohort_bw_options.index(st.session_state.sq_bowl_cohort_val) if st.session_state.sq_bowl_cohort_val in cohort_bw_options else 0
                 sel_cohort_bowl = st.selectbox(
                     "Quadrant Cohort",
@@ -2142,7 +2187,7 @@ elif st.session_state.page == "Rankings":
                 sq_cohort_bowl = bowl_pool.sort_values(['is_qualified', 'final_composite_score'], ascending=[False, False]).copy()
 
             with col_q_bw2:
-                # Complete IPL bowler dataset (N=260) options for searching & selecting
+                # Complete bowler dataset options for searching & selecting
                 hl_bw_options = [0] + bowl_pool['player_id'].tolist()
                 cur_hl_bw_id = st.session_state.sq_bowl_highlight_id or 0
                 hl_bw_pos = hl_bw_options.index(cur_hl_bw_id) if cur_hl_bw_id in hl_bw_options else 0

@@ -1,0 +1,11 @@
+rank,player_id,player_name,ipl_franchises,seasons_played,pressure_exposure_balls,qualifying_matches,successful_matches,raw_psr,exposure_weighted_psr,shrunk_exposure_weighted_psr,volatility_penalty_kappa,final_composite_score,baseline_strike_rate,pressure_strike_rate,delta_strike_rate,pressure_cumulative_dva,pressure_dva_per_ball,rank_k25,rank_k50,rank_k75,rank_k100,min_grid_rank,max_grid_rank,rank_shift,remains_top10_all_k,experience_category
+1,4708,Rinku Singh,Kolkata Knight Riders,"2022, 2023, 2024, 2025, 2026",194.0,14.5,9,0.6,0.8093,0.7316,0.7503,0.549,144.94,194.97,50.03,68.7288,0.3454,2,1,1,1,1,2,1,True,Both
+2,6725,Sherfane Rutherford,"Gujarat Titans, Mumbai Indians, Royal Challengers Bengaluru","2022, 2023, 2024, 2025, 2026",85.5,8.0,7,0.6364,0.8713,0.7086,0.7506,0.5319,141.05,201.75,60.7,42.5678,0.3734,1,2,2,2,1,2,1,True,Both
+3,7260,Dhruv Jurel,Rajasthan Royals,"2023, 2024, 2025, 2026",89.0,8.0,5,0.625,0.809,0.6728,0.7553,0.5082,144.89,198.94,54.05,30.1536,0.3208,3,3,3,4,3,4,1,True,Both
+4,1699,Suryakumar Yadav,Mumbai Indians,"2022, 2023, 2024, 2025, 2026",67.5,9.0,6,0.6,0.8222,0.6554,0.7535,0.4939,165.47,196.47,31.0,31.3642,0.369,4,4,6,7,4,7,3,True,Both
+5,7897,Namboori Tilak Varma,Mumbai Indians,"2022, 2023, 2024, 2025, 2026",130.0,13.0,12,0.7059,0.7423,0.6556,0.7519,0.493,139.11,202.76,63.65,86.3584,0.4771,6,5,5,5,5,6,1,True,Both
+6,6396,Tim David,"Mumbai Indians, Royal Challengers Bengaluru","2022, 2023, 2024, 2025, 2026",222.5,21.0,16,0.6667,0.7011,0.6514,0.7507,0.489,173.08,195.58,22.5,83.0666,0.3336,7,6,4,3,3,7,4,True,Both
+7,4391,Liam Livingstone,"Punjab Kings, Royal Challengers Bengaluru, Sunrisers Hyderabad","2022, 2023, 2024, 2025, 2026",65.5,7.0,6,0.6667,0.7939,0.6365,0.7528,0.4792,151.09,187.18,36.09,16.4308,0.2107,5,7,9,9,5,9,4,True,Both
+8,1077,David Miller,"Delhi Capitals, Gujarat Titans, Lucknow Super Giants","2022, 2023, 2024, 2025, 2026",143.0,15.5,11,0.5789,0.7063,0.6348,0.7501,0.4762,141.0,198.38,57.38,73.132,0.3953,10,8,7,6,6,10,4,True,Both
+9,8101,Ashutosh Sharma,"Delhi Capitals, Punjab Kings","2024, 2025, 2026",114.0,13.0,8,0.6154,0.7193,0.6323,0.7505,0.4745,144.04,215.52,71.48,53.796,0.4638,9,9,8,8,8,9,1,True,IPL-only
+10,37052,Naman Dhir,Mumbai Indians,"2024, 2025, 2026",84.5,8.5,6,0.6,0.7396,0.6246,0.7506,0.4688,163.35,206.8,43.45,46.7898,0.4543,8,10,10,10,8,10,2,True,Both

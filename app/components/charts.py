@@ -219,9 +219,12 @@ def plot_reliability_distribution(df_players):
 
     fig = go.Figure()
 
+    n_bat = len(bat_scores)
+    n_bowl = len(bowl_scores)
+
     fig.add_trace(go.Histogram(
         x=bat_scores,
-        name="Qualified Batters (N=45)",
+        name=f"Qualified Batters (N={n_bat})",
         nbinsx=12,
         marker_color="#D58DB5",
         marker_line_color="#D58DB5",
@@ -231,7 +234,7 @@ def plot_reliability_distribution(df_players):
 
     fig.add_trace(go.Histogram(
         x=bowl_scores,
-        name="Qualified Bowlers (N=53)",
+        name=f"Qualified Bowlers (N={n_bowl})",
         nbinsx=12,
         marker_color="#7964B5",
         marker_line_color="#7964B5",

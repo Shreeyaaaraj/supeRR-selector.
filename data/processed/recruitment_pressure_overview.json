@@ -1,0 +1,415 @@
+{
+  "total_matches": 837,
+  "total_deliveries": 194014,
+  "high_pressure_deliveries": 20121,
+  "pct_high_pressure": 10.37,
+  "total_players_evaluated": 838,
+  "total_batters_evaluated": 772,
+  "qualified_batters": 69,
+  "total_bowlers_evaluated": 563,
+  "qualified_bowlers": 75,
+  "players_evaluated_sub": "772 Batters (69 Qual) \u00b7 563 Bowlers (75 Qual)",
+  "tournament_context_sub": "Analysis of 194,014 ball leverage distributions and season-by-season pressure trends across IPL and Senior Men's T20I (2022\u20132026).",
+  "tier_caption": "Distribution of 194,014 legal tournament deliveries into Low (PI < 0.40), Medium (0.40\u20130.65), and High (PI >= 0.65) leverage tiers across IPL and Senior Men's T20I.",
+  "season_caption": "Tournament trend across IPL and Senior Men's T20I editions showing total deliveries and the volume of critical high-pressure deliveries.",
+  "sample_attrition_text": "<strong>Rigorous Sample Attrition:</strong> Only 8.9% of evaluated batters (69/772) and 13.3% of evaluated bowlers (75/563) satisfy the 3-pillar recruitment qualification threshold (minimum 120 career balls, 40/36 effective pressure balls, 6 effective qualifying matches at \u03bb=0.50).",
+  "elite_anchors_text": "<strong>Elite Stability Anchors:</strong> Rinku Singh (Reliability 0.5490, Kolkata Knight Riders / Both) and Jasprit Bumrah (Reliability 0.6277, Mumbai Indians / Both) maintain locked Rank 1 positions across all sensitivity shrinkage anchors (K in [25, 100]).",
+  "top_batter": {
+    "player_id": 4708,
+    "name": "Rinku Singh",
+    "team": "Kolkata Knight Riders",
+    "reliability_score": 0.549,
+    "exposure_weighted_psr": 0.8093,
+    "pressure_balls": 194.0,
+    "category": "Both"
+  },
+  "top_bowler": {
+    "player_id": 2933,
+    "name": "Jasprit Bumrah",
+    "team": "Mumbai Indians",
+    "reliability_score": 0.6277,
+    "exposure_weighted_psr": 0.9,
+    "pressure_legal_balls": 150.0,
+    "category": "Both"
+  },
+  "tier_counts": {
+    "Low": 125289,
+    "Medium": 48604,
+    "High": 20121
+  },
+  "tier_pcts": {
+    "Low": 64.58,
+    "Medium": 25.05,
+    "High": 10.37
+  },
+  "innings_summary": {
+    "1": {
+      "total_deliveries": 102054,
+      "high_pressure_deliveries": 7124,
+      "pct_high_pressure": 6.98,
+      "mean_pi": 0.3375
+    },
+    "2": {
+      "total_deliveries": 91934,
+      "high_pressure_deliveries": 12971,
+      "pct_high_pressure": 14.11,
+      "mean_pi": 0.3988
+    }
+  },
+  "phase_summary": {
+    "Death": {
+      "total_deliveries": 42927,
+      "high_pressure_deliveries": 12559,
+      "pct_high_pressure": 29.26,
+      "mean_pi": 0.5198
+    },
+    "Middle": {
+      "total_deliveries": 89289,
+      "high_pressure_deliveries": 7235,
+      "pct_high_pressure": 8.1,
+      "mean_pi": 0.3689
+    },
+    "Powerplay": {
+      "total_deliveries": 61798,
+      "high_pressure_deliveries": 327,
+      "pct_high_pressure": 0.53,
+      "mean_pi": 0.257
+    }
+  },
+  "season_summary": {
+    "2022": {
+      "total_matches": 180,
+      "total_deliveries": 42465,
+      "high_pressure_deliveries": 4358,
+      "pct_high_pressure": 10.26,
+      "mean_pi": 0.3739
+    },
+    "2023": {
+      "total_matches": 140,
+      "total_deliveries": 32988,
+      "high_pressure_deliveries": 3136,
+      "pct_high_pressure": 9.51,
+      "mean_pi": 0.3667
+    },
+    "2024": {
+      "total_matches": 177,
+      "total_deliveries": 41276,
+      "high_pressure_deliveries": 4571,
+      "pct_high_pressure": 11.07,
+      "mean_pi": 0.3718
+    },
+    "2025": {
+      "total_matches": 196,
+      "total_deliveries": 44199,
+      "high_pressure_deliveries": 4660,
+      "pct_high_pressure": 10.54,
+      "mean_pi": 0.3617
+    },
+    "2026": {
+      "total_matches": 144,
+      "total_deliveries": 33086,
+      "high_pressure_deliveries": 3396,
+      "pct_high_pressure": 10.26,
+      "mean_pi": 0.3573
+    }
+  },
+  "team_summary": {
+    "England": {
+      "total_deliveries": 7451,
+      "high_pressure_deliveries": 678,
+      "pct_high_pressure": 9.1
+    },
+    "West Indies": {
+      "total_deliveries": 10407,
+      "high_pressure_deliveries": 1320,
+      "pct_high_pressure": 12.68
+    },
+    "India": {
+      "total_deliveries": 13369,
+      "high_pressure_deliveries": 777,
+      "pct_high_pressure": 5.81
+    },
+    "Australia": {
+      "total_deliveries": 6248,
+      "high_pressure_deliveries": 434,
+      "pct_high_pressure": 6.95
+    },
+    "Sri Lanka": {
+      "total_deliveries": 8434,
+      "high_pressure_deliveries": 770,
+      "pct_high_pressure": 9.13
+    },
+    "Chennai Super Kings": {
+      "total_deliveries": 8692,
+      "high_pressure_deliveries": 853,
+      "pct_high_pressure": 9.81
+    },
+    "Mumbai Indians": {
+      "total_deliveries": 8854,
+      "high_pressure_deliveries": 961,
+      "pct_high_pressure": 10.85
+    },
+    "Rajasthan Royals": {
+      "total_deliveries": 9107,
+      "high_pressure_deliveries": 721,
+      "pct_high_pressure": 7.92
+    },
+    "Punjab Kings": {
+      "total_deliveries": 8778,
+      "high_pressure_deliveries": 901,
+      "pct_high_pressure": 10.26
+    },
+    "Royal Challengers Bengaluru": {
+      "total_deliveries": 9025,
+      "high_pressure_deliveries": 709,
+      "pct_high_pressure": 7.86
+    },
+    "Delhi Capitals": {
+      "total_deliveries": 8384,
+      "high_pressure_deliveries": 1171,
+      "pct_high_pressure": 13.97
+    },
+    "Kolkata Knight Riders": {
+      "total_deliveries": 7905,
+      "high_pressure_deliveries": 851,
+      "pct_high_pressure": 10.77
+    },
+    "Sunrisers Hyderabad": {
+      "total_deliveries": 8710,
+      "high_pressure_deliveries": 947,
+      "pct_high_pressure": 10.87
+    },
+    "Gujarat Titans": {
+      "total_deliveries": 9379,
+      "high_pressure_deliveries": 759,
+      "pct_high_pressure": 8.09
+    },
+    "Lucknow Super Giants": {
+      "total_deliveries": 8853,
+      "high_pressure_deliveries": 757,
+      "pct_high_pressure": 8.55
+    },
+    "South Africa": {
+      "total_deliveries": 6166,
+      "high_pressure_deliveries": 1005,
+      "pct_high_pressure": 16.3
+    },
+    "Bangladesh": {
+      "total_deliveries": 8982,
+      "high_pressure_deliveries": 1153,
+      "pct_high_pressure": 12.84
+    },
+    "Zimbabwe": {
+      "total_deliveries": 6231,
+      "high_pressure_deliveries": 985,
+      "pct_high_pressure": 15.81
+    },
+    "Afghanistan": {
+      "total_deliveries": 6266,
+      "high_pressure_deliveries": 593,
+      "pct_high_pressure": 9.46
+    },
+    "Ireland": {
+      "total_deliveries": 5171,
+      "high_pressure_deliveries": 586,
+      "pct_high_pressure": 11.33
+    },
+    "New Zealand": {
+      "total_deliveries": 9423,
+      "high_pressure_deliveries": 903,
+      "pct_high_pressure": 9.58
+    },
+    "Pakistan": {
+      "total_deliveries": 10482,
+      "high_pressure_deliveries": 1147,
+      "pct_high_pressure": 10.94
+    },
+    "Hong Kong": {
+      "total_deliveries": 919,
+      "high_pressure_deliveries": 111,
+      "pct_high_pressure": 12.08
+    },
+    "Netherlands": {
+      "total_deliveries": 1412,
+      "high_pressure_deliveries": 217,
+      "pct_high_pressure": 15.37
+    },
+    "United Arab Emirates": {
+      "total_deliveries": 2394,
+      "high_pressure_deliveries": 346,
+      "pct_high_pressure": 14.45
+    },
+    "Singapore": {
+      "total_deliveries": 360,
+      "high_pressure_deliveries": 72,
+      "pct_high_pressure": 20.0
+    },
+    "Kuwait": {
+      "total_deliveries": 298,
+      "high_pressure_deliveries": 74,
+      "pct_high_pressure": 24.83
+    },
+    "Scotland": {
+      "total_deliveries": 713,
+      "high_pressure_deliveries": 72,
+      "pct_high_pressure": 10.1
+    },
+    "Canada": {
+      "total_deliveries": 507,
+      "high_pressure_deliveries": 111,
+      "pct_high_pressure": 21.89
+    },
+    "United States Of America": {
+      "total_deliveries": 332,
+      "high_pressure_deliveries": 28,
+      "pct_high_pressure": 8.43
+    },
+    "Oman": {
+      "total_deliveries": 349,
+      "high_pressure_deliveries": 79,
+      "pct_high_pressure": 22.64
+    },
+    "Nepal": {
+      "total_deliveries": 381,
+      "high_pressure_deliveries": 28,
+      "pct_high_pressure": 7.35
+    },
+    "Japan": {
+      "total_deliveries": 32,
+      "high_pressure_deliveries": 2,
+      "pct_high_pressure": 6.25
+    }
+  },
+  "top_tense_situations": [
+    {
+      "match_id": 31291,
+      "match_date": "2024-05-24",
+      "season": "2024",
+      "format": "IPL",
+      "home_team": "Sunrisers Hyderabad",
+      "away_team": "Rajasthan Royals",
+      "result": "Sunrisers Hyderabad Won by 36 runs",
+      "death_balls": 31,
+      "death_high_press_balls": 31,
+      "death_mean_pi": 0.9449,
+      "max_pi": 1.0
+    },
+    {
+      "match_id": 21584,
+      "match_date": "2023-05-24",
+      "season": "2023",
+      "format": "IPL",
+      "home_team": "Lucknow Super Giants",
+      "away_team": "Mumbai Indians",
+      "result": "Mumbai Indians won by 81 runs",
+      "death_balls": 9,
+      "death_high_press_balls": 9,
+      "death_mean_pi": 0.9409,
+      "max_pi": 1.0
+    },
+    {
+      "match_id": 40767,
+      "match_date": "2025-06-03",
+      "season": "2025",
+      "format": "IPL",
+      "home_team": "Royal Challengers Bengaluru",
+      "away_team": "Punjab Kings",
+      "result": "Royal Challengers Bengaluru Won by 6 runs",
+      "death_balls": 31,
+      "death_high_press_balls": 31,
+      "death_mean_pi": 0.9122,
+      "max_pi": 1.0
+    },
+    {
+      "match_id": 50351,
+      "match_date": "2026-04-20",
+      "season": "2026",
+      "format": "IPL",
+      "home_team": "Gujarat Titans",
+      "away_team": "Mumbai Indians",
+      "result": "Mumbai Indians Won by 99 runs",
+      "death_balls": 6,
+      "death_high_press_balls": 6,
+      "death_mean_pi": 0.8811,
+      "max_pi": 0.8959
+    },
+    {
+      "match_id": 44267,
+      "match_date": "2025-07-24",
+      "season": "2025",
+      "format": "T20I",
+      "home_team": "Bangladesh",
+      "away_team": "Pakistan",
+      "result": "Pakistan Won by 74 runs",
+      "death_balls": 11,
+      "death_high_press_balls": 11,
+      "death_mean_pi": 0.863,
+      "max_pi": 0.9024
+    },
+    {
+      "match_id": 37554,
+      "match_date": "2024-10-15",
+      "season": "2024",
+      "format": "T20I",
+      "home_team": "Sri Lanka",
+      "away_team": "West Indies",
+      "result": "Sri Lanka Won by 73 runs",
+      "death_balls": 7,
+      "death_high_press_balls": 7,
+      "death_mean_pi": 0.8612,
+      "max_pi": 0.8882
+    },
+    {
+      "match_id": 50504,
+      "match_date": "2026-06-14",
+      "season": "2026",
+      "format": "T20I",
+      "home_team": "West Indies",
+      "away_team": "Sri Lanka",
+      "result": "Sri Lanka Won by 37 runs",
+      "death_balls": 19,
+      "death_high_press_balls": 19,
+      "death_mean_pi": 0.8553,
+      "max_pi": 0.922
+    },
+    {
+      "match_id": 50370,
+      "match_date": "2026-05-06",
+      "season": "2026",
+      "format": "IPL",
+      "home_team": "Sunrisers Hyderabad",
+      "away_team": "Punjab Kings",
+      "result": "Sunrisers Hyderabad Won by 33 runs",
+      "death_balls": 33,
+      "death_high_press_balls": 33,
+      "death_mean_pi": 0.8382,
+      "max_pi": 0.8968
+    },
+    {
+      "match_id": 36560,
+      "match_date": "2024-09-06",
+      "season": "2024",
+      "format": "T20I",
+      "home_team": "Scotland",
+      "away_team": "Australia",
+      "result": "Australia Won by 70 runs",
+      "death_balls": 10,
+      "death_high_press_balls": 10,
+      "death_mean_pi": 0.836,
+      "max_pi": 0.8736
+    },
+    {
+      "match_id": 31248,
+      "match_date": "2024-04-15",
+      "season": "2024",
+      "format": "IPL",
+      "home_team": "Royal Challengers Bengaluru",
+      "away_team": "Sunrisers Hyderabad",
+      "result": "Sunrisers Hyderabad Won by 25 runs",
+      "death_balls": 36,
+      "death_high_press_balls": 36,
+      "death_mean_pi": 0.8336,
+      "max_pi": 0.8968
+    }
+  ]
+}

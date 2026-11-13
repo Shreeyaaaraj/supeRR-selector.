@@ -3,6 +3,7 @@ SupeRR Selector - Phase 5: Dashboard Data Access Layer
 ======================================================
 Modular, high-performance cached data loaders for the Streamlit dashboard.
 Ensures zero redundant calculation inside UI components.
+Defaults to Model C recruitment datasets with seamless fallback to frozen Model A IPL datasets.
 """
 
 import json
@@ -16,7 +17,9 @@ REPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 @st.cache_data(show_spinner=False)
 def load_pressure_overview():
     """Load high-level macro statistics and distributions."""
-    json_path = os.path.join(DATA_DIR, 'ipl_pressure_overview.json')
+    json_path = os.path.join(DATA_DIR, 'recruitment_pressure_overview.json')
+    if not os.path.exists(json_path):
+        json_path = os.path.join(DATA_DIR, 'ipl_pressure_overview.json')
     if not os.path.exists(json_path):
         raise FileNotFoundError(f"Overview data not found at {json_path}")
     with open(json_path, 'r', encoding='utf-8') as f:
@@ -24,8 +27,10 @@ def load_pressure_overview():
 
 @st.cache_data(show_spinner=False)
 def load_all_players():
-    """Load all 601 evaluated IPL players with performance, qualification, and reliability metrics."""
-    csv_path = os.path.join(DATA_DIR, 'ipl_all_players.csv')
+    """Load all evaluated players with performance, qualification, and reliability metrics."""
+    csv_path = os.path.join(DATA_DIR, 'recruitment_all_players.csv')
+    if not os.path.exists(csv_path):
+        csv_path = os.path.join(DATA_DIR, 'ipl_all_players.csv')
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"All players data not found at {csv_path}")
     df = pd.read_csv(csv_path)
@@ -37,8 +42,10 @@ def load_all_players():
 
 @st.cache_data(show_spinner=False)
 def load_top10_batters():
-    """Load the approved Phase 4 Top 10 Most Reliable IPL Batters."""
-    csv_path = os.path.join(REPORTS_DIR, 'ipl_top10_reliable_batters.csv')
+    """Load the Top 10 Most Reliable Batters."""
+    csv_path = os.path.join(REPORTS_DIR, 'recruitment_top10_reliable_batters.csv')
+    if not os.path.exists(csv_path):
+        csv_path = os.path.join(REPORTS_DIR, 'ipl_top10_reliable_batters.csv')
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Top 10 batters data not found at {csv_path}")
     df = pd.read_csv(csv_path)
@@ -48,8 +55,10 @@ def load_top10_batters():
 
 @st.cache_data(show_spinner=False)
 def load_top10_bowlers():
-    """Load the approved Phase 4 Top 10 Most Reliable IPL Bowlers."""
-    csv_path = os.path.join(REPORTS_DIR, 'ipl_top10_reliable_bowlers.csv')
+    """Load the Top 10 Most Reliable Bowlers."""
+    csv_path = os.path.join(REPORTS_DIR, 'recruitment_top10_reliable_bowlers.csv')
+    if not os.path.exists(csv_path):
+        csv_path = os.path.join(REPORTS_DIR, 'ipl_top10_reliable_bowlers.csv')
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Top 10 bowlers data not found at {csv_path}")
     df = pd.read_csv(csv_path)
@@ -60,7 +69,9 @@ def load_top10_bowlers():
 @st.cache_data(show_spinner=False)
 def load_player_match_history(player_id=None, role=None):
     """Load match-by-match performance history."""
-    csv_path = os.path.join(DATA_DIR, 'ipl_player_match_history.csv')
+    csv_path = os.path.join(DATA_DIR, 'recruitment_player_match_history.csv')
+    if not os.path.exists(csv_path):
+        csv_path = os.path.join(DATA_DIR, 'ipl_player_match_history.csv')
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Player match history not found at {csv_path}")
     df = pd.read_csv(csv_path)
@@ -74,7 +85,9 @@ def load_player_match_history(player_id=None, role=None):
 @st.cache_data(show_spinner=False)
 def load_player_phase_breakdown(player_id=None, role=None):
     """Load phase breakdowns (Powerplay, Middle, Death) for players."""
-    csv_path = os.path.join(DATA_DIR, 'ipl_player_phase_breakdown.csv')
+    csv_path = os.path.join(DATA_DIR, 'recruitment_player_phase_breakdown.csv')
+    if not os.path.exists(csv_path):
+        csv_path = os.path.join(DATA_DIR, 'ipl_player_phase_breakdown.csv')
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"Player phase breakdown not found at {csv_path}")
     df = pd.read_csv(csv_path)
@@ -87,10 +100,12 @@ def load_player_phase_breakdown(player_id=None, role=None):
 
 @st.cache_data(show_spinner=False)
 def load_ipl_matches():
-    """Load metadata for all 371 IPL matches (2022-2026)."""
-    csv_path = os.path.join(DATA_DIR, 'ipl_matches.csv')
+    """Load metadata for matches."""
+    csv_path = os.path.join(DATA_DIR, 'recruitment_matches.csv')
     if not os.path.exists(csv_path):
-        raise FileNotFoundError(f"IPL matches data not found at {csv_path}")
+        csv_path = os.path.join(DATA_DIR, 'ipl_matches.csv')
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"Matches data not found at {csv_path}")
     df = pd.read_csv(csv_path)
     df['match_id'] = df['match_id'].astype(int)
     df['season'] = df['season'].astype(str)
@@ -98,15 +113,18 @@ def load_ipl_matches():
 
 @st.cache_data(show_spinner=False)
 def load_ipl_deliveries(match_id=None):
-    """Load ball-by-ball delivery records for IPL matches."""
-    parquet_path = os.path.join(DATA_DIR, 'ipl_deliveries.parquet')
+    """Load ball-by-ball delivery records."""
+    parquet_path = os.path.join(DATA_DIR, 'recruitment_deliveries.parquet')
+    if not os.path.exists(parquet_path):
+        parquet_path = os.path.join(DATA_DIR, 'ipl_deliveries.parquet')
     csv_path = os.path.join(DATA_DIR, 'ipl_deliveries.csv')
+
     if os.path.exists(parquet_path):
         df = pd.read_parquet(parquet_path)
     elif os.path.exists(csv_path):
         df = pd.read_csv(csv_path, low_memory=False)
     else:
-        raise FileNotFoundError("IPL deliveries file not found in parquet or csv.")
+        raise FileNotFoundError("Deliveries file not found in parquet or csv.")
     
     df['match_id'] = df['match_id'].astype(int)
     if match_id is not None:
