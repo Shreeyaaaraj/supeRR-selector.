@@ -1,445 +1,214 @@
-# SupeRR Selector | Season 2
-### Cricket Intelligence Studio — IPL & Senior Men's T20I Recruitment Analytics
+# SupeRR Selector (Season 2)
+### Professional IPL & Senior Men's T20I Player Pressure & Reliability Analytics Platform
 
-**SupeRR Selector** is a cricket analytics and player recruitment platform designed to evaluate player reliability, performance under pressure, and consistency in high-leverage match situations.
-
-The platform combines ball-by-ball data from the **Indian Premier League (IPL Seasons 2022–2026)** and **Senior Men's T20 Internationals (T20Is)** to identify and compare players across three experience categories:
-
-- IPL-only players
-- Senior Men's T20I-only players
-- Players with experience in both formats
-
-It uses pressure identification, Delivery Value Added (DVA), Pressure Success Rate (PSR), Empirical Bayes shrinkage, and reliability adjustments to support evidence-based player evaluation.
+A mathematically rigorous, reproducible cricket analytics platform quantifying match pressure and ranking player reliability in high-leverage situations across the **Indian Premier League (IPL Seasons 2022–2026)** and **Senior Men's T20 Internationals (T20Is)**.
 
 ---
 
-## 1. Project Overview
+## 1. Executive Summary & Core Results
 
-Traditional cricket statistics such as batting average, strike rate and bowling economy do not fully explain how players perform under pressure.
+**SupeRR Selector** evaluates player execution when matches are on the line. Moving beyond uncontextualized averages and strike rates, the platform models delivery-level leverage (\(PI \in [0.0, 1.0]\)), benchmarks performance via **Delivery Value Added (DVA)** against expected par, computes exposure-weighted success rates, applies empirical shrinkage to account for sample size, and stabilizes rankings against match volatility (\(\kappa\)).
 
-SupeRR Selector addresses this by evaluating player performance in high-leverage situations and comparing execution against format-specific expectations.
+The recruitment evaluation covers **838 unique players and 1,335 player-role evaluations**, combining IPL-only, Senior Men's T20I-only, and players with experience in both formats. The final qualified pool contains **69 batters and 75 bowlers**.
 
-The platform provides three complementary analytical models:
+Top 10 Most Reliable Batters — Combined IPL & T20I Rankings
+Rank	Player Name	IPL Franchise(s)	Pressure Balls	Qual Matches	Raw PSR	Exp PSR	Composite Reliability	Base SR	Press SR	Delta SR
+1	Rinku Singh	Kolkata Knight Riders	194.0	14.5	0.6000	0.8093	0.5490	144.94	194.97	+50.03
+2	Sherfane Rutherford	Gujarat Titans, Mumbai Indians, Royal Challengers Bengaluru	85.5	8.0	0.6364	0.8713	0.5319	141.05	201.75	+60.70
+3	Dhruv Jurel	Rajasthan Royals	89.0	8.0	0.6250	0.8090	0.5082	144.89	198.94	+54.05
+4	Suryakumar Yadav	Mumbai Indians	67.5	9.0	0.6000	0.8222	0.4939	165.47	196.47	+31.00
+5	Namboori Tilak Varma	Mumbai Indians	130.0	13.0	0.7059	0.7423	0.4930	139.11	202.76	+63.65
+6	Tim David	Mumbai Indians, Royal Challengers Bengaluru	222.5	21.0	0.6667	0.7011	0.4890	173.08	195.58	+22.50
+7	Liam Livingstone	Punjab Kings, Royal Challengers Bengaluru, Sunrisers Hyderabad	65.5	7.0	0.6667	0.7939	0.4792	151.09	187.18	+36.09
+8	David Miller	Delhi Capitals, Gujarat Titans, Lucknow Super Giants	143.0	15.5	0.5789	0.7063	0.4762	141.00	198.38	+57.38
+9	Ashutosh Sharma	Delhi Capitals, Punjab Kings	114.0	13.0	0.6154	0.7193	0.4745	144.04	215.52	+71.48
+10	Naman Dhir	Mumbai Indians	84.5	8.5	0.6000	0.7396	0.4688	163.35	206.80	+43.45
 
-| Model | Data used | Purpose |
-|---|---|---|
-| **Model A — IPL Reference** | IPL performances only | Preserves the original IPL-only V1 baseline |
-| **Model B — Pooled Model** | IPL + Senior Men's T20I | Evaluates performance using combined-format evidence |
-| **Model C — Recruitment Model** | IPL-primary + T20I-auxiliary | Prioritises IPL evidence while incorporating T20I experience |
+Top 10 Most Reliable Bowlers — Combined IPL & T20I Rankings
+Rank	Player Name	IPL Franchise(s)	Legal Balls	Qual Matches	Raw PSR	Exp PSR	Composite Reliability	Base Econ	Press Econ	Clutch Delta
+1	Jasprit Bumrah	Mumbai Indians	150.0	20.0	0.8400	0.9000	0.6277	6.89	6.47	+0.42
+2	Sunil Narine	Kolkata Knight Riders	101.0	10.0	0.9000	0.8911	0.6203	6.85	5.81	+1.04
+3	Harshit Rana	Kolkata Knight Riders	108.5	13.0	0.8667	0.8894	0.6144	9.52	7.33	+2.19
+4	Shardul Thakur	Chennai Super Kings, Delhi Capitals, Kolkata Knight Riders, Lucknow Super Giants, Mumbai Indians	85.0	8.5	0.8889	0.8588	0.6008	9.93	8.27	+1.66
+5	Matheesha Pathirana	Chennai Super Kings, Kolkata Knight Riders	179.0	14.5	0.7647	0.8464	0.5997	8.08	6.62	+1.46
+6	Lockie Ferguson	Gujarat Titans, Kolkata Knight Riders, Punjab Kings, Royal Challengers Bengaluru	108.0	13.5	0.8333	0.8472	0.5941	8.63	6.89	+1.74
+7	Nathan Ellis	Chennai Super Kings, Punjab Kings	106.5	11.0	0.8235	0.8498	0.5925	7.97	7.70	+0.27
+8	Cameron Green	Kolkata Knight Riders, Mumbai Indians, Royal Challengers Bengaluru	61.0	7.0	0.8750	0.9016	0.5913	9.38	6.84	+2.54
+9	Varun Chakravarthy	Kolkata Knight Riders	241.0	25.5	0.8182	0.8091	0.5849	7.99	6.85	+1.14
+10	Deepak Chahar	Chennai Super Kings, Mumbai Indians	54.0	7.0	0.8889	0.8889	0.5849	8.68	8.83	-0.15
 
-**Important:** Model A is the frozen original IPL reference. Players with both IPL and T20I experience are evaluated using their IPL performances only. T20I-only players remain visible in the overall candidate pool but receive N/A for Model A IPL scores.
-
-Model B and Model C expand the evaluation to include T20I-only candidates.
-
----
-
-## 2. Dataset & Player Coverage
-
-The platform uses processed ball-by-ball cricket data from IPL and Senior Men's T20I competitions.
-
-### Dataset coverage
-
-| Dataset | Match records | Matches with ball-by-ball data | Deliveries |
-|---|---:|---:|---:|
-| IPL | 371 | 367 | 87,687 |
-| Senior Men's T20I | 482 | 470 | 106,327 |
-| **Combined** | **853** | **837** | **194,014** |
-
-### Candidate pool
-
-<escape> | Player category | Player-role evaluations |
-|---|---:|
-| IPL-only | 267 |
-| Both IPL and T20I | 353 |
-| Senior Men's T20I-only | 715 |
-| **Total** | **1,335** |</escape>
-
-**838 unique players** are represented in the combined candidate pool.
-
-Player-role evaluations are calculated independently for batting and bowling. A player can therefore appear in both role categories.
-
-### Candidate eligibility
-
-Model C uses role-specific qualification requirements, including:
-
-- Minimum career ball volume.
-- Minimum effective pressure-ball exposure.
-- Minimum effective qualifying matches.
-
-The qualification process distinguishes between batting and bowling evaluations. Players can qualify independently in either or both roles.
-
-Pakistani players are excluded from candidate evaluation and rankings using verified player metadata. Performances by eligible non-Pakistani players against Pakistani opposition are retained.
+Table Notes
+Metric	Explanation
+Pressure Balls	Effective batting exposure in high-pressure situations.
+Legal Balls	Effective legal bowling exposure in high-pressure situations.
+Qual Matches	Effective number of qualifying matches.
+Raw PSR	Raw Pressure Success Rate before exposure adjustment.
+Exp PSR	Exposure-weighted Pressure Success Rate.
+Composite Reliability	Final reliability score used to rank players.
+Base SR	Baseline batting strike rate.
+Press SR	Batting strike rate in high-pressure situations.
+Delta SR	Difference between pressure strike rate and baseline strike rate.
+Base Econ	Baseline bowling economy rate.
+Press Econ	Bowling economy rate in high-pressure situations.
+Clutch Delta	Reduction in economy rate under pressure. A positive value indicates improved economy.
+- Pressure Balls / Legal Balls and Qual Matches are effective exposure values. Fractional values can occur because T20I exposure receives a reduced contribution in the combined evaluation.
+- Exp PSR represents the exposure-weighted PSR.
+- Composite Reliability is the final ranking score.
+- For batters, a positive Delta SR indicates a higher strike rate in pressure situations than the baseline.
+- For bowlers, Clutch Delta is the reduction in economy rate under pressure. A positive value indicates economy suppression; a negative value indicates a higher pressure economy rate.
+- IPL Franchise(s) lists IPL team history, not T20I teams.
+- Rankings indicate measured pressure reliability, not current player availability, auction status, price, or guaranteed squad suitability.
 
 ---
 
-## 3. Three Recruitment Models
+## 2. Interactive Streamlit Dashboard
 
-### Model A — Original IPL Reference Model
+The platform includes a sports analytics web dashboard built with **Streamlit** and **Plotly**, adhering to light-theme principles (clean white/light-grey backgrounds, dark navy typography, soft blue and muted purple accents, and no emojis).
 
-Model A preserves the original IPL-only V1 methodology and results.
+### Dashboard Sections:
 
-- Uses IPL performance data only.
-- Includes IPL-only and dual-format players who have IPL records.
-- Does not assign IPL scores to T20I-only players.
-- Keeps original IPL priors, qualification rules, reliability adjustments and scores unchanged.
+1. **Overview**: Executive macro metrics, match and delivery coverage, distribution across pressure tiers, season trends, and showcase podiums for top-ranked performers.
 
-The original V1 parameters are:
+2. **Rankings**: Separate interactive leaderboards for batters and bowlers with multi-column sorting, franchise filters, qualified-player views, and CSV export. Rankings use the combined IPL and Senior Men's T20I recruitment evaluation.
 
-| Parameter | Batters | Bowlers |
-|---|---:|---:|
-| Shrinkage constant (K) | 50 | 48 |
-| IPL prior (μ) | 0.4303 | 0.6210 |
+3. **Player Search**: Player directory covering the evaluated recruitment pool. Displays qualification status, experience category (IPL-only, T20I-only, or Both), overall versus pressure statistics, and player drill-downs.
 
-Model A acts as the historical reference against which the expanded recruitment models can be compared.
+4. **Batter Analysis**: Deep-dive analysis for individual batters, including:
+   - *Player Overview*: Metric cards, reliability score, and career versus high-pressure comparison.
+   - *Performance Analysis*: Strike rate and average comparison, DVA breakdown, empirical delta summary, phase splits (Powerplay, Middle, Death), and match timeline.
+   - *Player Comparison Studio*: Side-by-side player evaluation, exposure volume, and phase comparisons.
+   - *Match Pressure Explorer*: Over-by-over pressure timeline, run-chase progression, and delivery-level DVA inspection.
+   - *Player Scouting Report*: Data-driven strengths, tactical limitation analysis, and downloadable PDF scouting report.
 
-### Model B — Combined IPL + T20I Model
+5. **Bowler Analysis**: Deep-dive analysis for individual bowlers, including economy suppression, DVA, dot-ball performance, phase comparisons, player comparison, match pressure exploration, and downloadable PDF scouting reports.
 
-Model B evaluates players using pooled IPL and Senior Men's T20I evidence.
+6. **Pressure Analysis**: Macro distributions by innings (chase versus setting a target), match phases, season trends, team exposure, and high-pressure match situations.
 
-- Uses verified IPL and Senior Men's T20I records.
-- Includes players with experience in either or both formats.
-- Uses equal format exposure weighting (λ = 1.00).
-- Applies pooled cohort priors and empirical shrinkage.
-
-This model provides a combined-format performance comparison.
-
-### Model C — IPL-Primary Recruitment Model
-
-Model C is the primary recruitment evaluation model.
-
-It gives greater importance to IPL evidence while incorporating T20I performance as additional supporting evidence.
-
-**T20I weighting: λ = 0.50**
-
-Effective exposure:
-
-`N_eff = N_IPL + λ × N_T20I`
-
-Effective success:
-
-`S_eff = N_IPL × PSR_IPL + λ × N_T20I × PSR_T20I`
-
-Effective Pressure Success Rate:
-
-`PSR_eff = S_eff / N_eff`
-
-The resulting rate is shrunk towards the original IPL cohort prior and adjusted for player-match volatility.
-
-This allows T20I-only players to be evaluated without treating their T20I exposure as equivalent to the same volume of IPL exposure.
-
-### Model C qualification requirements
-
-| Requirement | Batters | Bowlers |
-|---|---:|---:|
-| Minimum career balls | 120 faced | 120 legal balls bowled |
-| Minimum effective pressure balls | 40 | 36 |
-| Minimum effective qualifying matches | 6 | 6 |
-
-Effective exposure and qualifying matches account for the 0.50 T20I weighting.
+7. **Methodology**: Transparent documentation of the pressure identification process, DVA calculation, reliability scoring, shrinkage parameters, qualification criteria, and data limitations.
 
 ---
 
-## 4. Analytical Methodology
+## 3. Running the Dashboard Locally
 
-### 4.1 Pressure Index (PI)
+### Prerequisites
+- Python 3.10+
+- Virtual environment (recommended)
 
-Each delivery receives a Pressure Index between 0 and 1.
+### Installation & Launch
 
-The pressure engine considers:
+```bash
+# 1. Clone repository and navigate to the project root
+cd "superRR-selector"
 
-- Required Run Rate (RRR).
-- Wickets remaining.
-- Balls remaining.
-- Match phase and stage.
-- Match situation, including chase and first-innings context.
+# 2. Install dependencies
+pip install -r requirements.txt
 
-Pressure categories:
+# 3. Launch Streamlit dashboard
+streamlit run app/main.py
+```
 
-| Category | Pressure Index |
-|---|---|
-| High Pressure | PI ≥ 0.65 |
-| Medium Pressure | 0.40 ≤ PI < 0.65 |
-| Low Pressure | PI < 0.40 |
-
-### 4.2 Delivery Value Added (DVA)
-
-DVA measures how much value a player adds or suppresses compared with the expected par performance for the format and match phase.
-
-**Batter DVA**
-
-Evaluates batter runs against expected par scoring, with a dismissal penalty.
-
-**Bowler DVA**
-
-Evaluates runs conceded against expected par economy, with a bonus for bowler-credited wickets.
-
-Format-specific and phase-specific par benchmarks are used.
-
-### 4.3 Pressure Success Rate (PSR)
-
-PSR measures the proportion of qualifying player-match pressure performances that produce positive net DVA.
-
-Pressure exposure is used to weight the success rate, rather than treating every appearance as an identical sample.
-
-### 4.4 Empirical Bayes Shrinkage
-
-Player results are adjusted towards an appropriate cohort prior to reduce the influence of small samples.
-
-This helps avoid overrating players based on a limited number of pressure situations.
-
-### 4.5 Reliability Adjustment
-
-A volatility-based reliability multiplier (κ) adjusts the final score to account for variation in match-level performance.
-
-The purpose is to reward repeatable execution rather than isolated high-pressure performances.
+The application will open in your default browser at `http://localhost:8501`.
 
 ---
 
-## 5. Dashboard Features
+## 4. Deploying to Streamlit Community Cloud & GitHub
 
-The Streamlit dashboard provides an interactive scouting and analytics environment.
+The repository is configured for deployment through Streamlit Community Cloud.
 
-### Overview
-- Combined tournament context.
-- Match and delivery coverage.
-- Pressure distributions.
-- Player performance highlights.
-- Dynamic KPI summaries.
+1. **Push to GitHub**:
+   Ensure the application, source code, configuration, requirements, and required processed datasets are committed.
 
-### Rankings
-- Batter reliability leaderboard.
-- Bowler reliability leaderboard.
-- Player rankings and qualification information.
-- Search and franchise filters.
-- CSV downloads.
+2. **Streamlit Community Cloud**:
+   - Log in to [share.streamlit.io](https://share.streamlit.io/).
+   - Select your GitHub repository and branch (`main`).
+   - Set **Main file path** to:
 
-### Player Search
-- Search across the combined candidate pool.
-- IPL-only, T20I-only and dual-format player coverage.
-- Player-role evaluation information.
-- Qualification and performance details.
+   ```text
+   app/main.py
+   ```
 
-### Batter Analysis
-- Player performance overview.
-- Career versus pressure statistics.
-- Strike-rate and average comparisons.
-- DVA breakdown.
-- Powerplay, middle-overs and death-overs analysis.
-- Match-by-match performance history.
-- Player scouting dossier and PDF export.
+   - Click **Deploy**.
 
-### Bowler Analysis
-- Economy and pressure-performance analysis.
-- DVA and wicket contributions.
-- Phase-wise bowling performance.
-- Match history and delivery-level exploration.
-- Player comparison and scouting dossier.
-- Downloadable PDF report.
-
-### Player Comparison
-- Multi-player performance comparison.
-- Radar charts.
-- Scoring and control metrics.
-- Exposure and phase comparisons.
-
-### Pressure Analysis
-- Innings-level pressure distributions.
-- Match phase analysis.
-- Team pressure exposure.
-- High-pressure match situations.
-- Over-by-over pressure timelines.
-
-### Methodology
-- Pressure Index methodology.
-- DVA calculations.
-- PSR methodology.
-- Empirical Bayes shrinkage.
-- Reliability adjustment.
-- Qualification criteria and model assumptions.
+3. **Configuration**:
+   The `.streamlit/config.toml` file controls the dashboard theme and visual configuration in production.
 
 ---
 
-## 6. Technology Stack
-
-| Category | Technologies |
-|---|---|
-| Programming | Python |
-| Data Processing | Pandas, NumPy |
-| Analytics | Statistical modelling, Empirical Bayes |
-| Visualisation | Plotly |
-| Dashboard | Streamlit |
-| Data Formats | CSV, JSON, Parquet |
-| Version Control | Git, GitHub |
-| Deployment | Streamlit Community Cloud |
-| PDF Reporting | Python PDF generation tools |
-
----
-
-## 7. Repository Structure
+## 5. Repository Structure
 
 ```text
-supeRR-selector/
-│
+superRR-selector/
 ├── .streamlit/
 │   └── config.toml
-│
 ├── app/
 │   ├── components/
 │   │   ├── charts.py
 │   │   ├── kpi_cards.py
 │   │   └── scouting_report_pdf.py
-│   │
 │   └── main.py
-│
 ├── data/
-│   ├── raw/
+│   ├── raw/                                  # Original source datasets
 │   └── processed/
-│       ├── clean_*.csv
+│       ├── clean_*.csv                       # Standardized master datasets
+│       ├── clean_ball_by_ball.csv
+│       ├── clean_competitions.csv
+│       ├── clean_matches.csv
+│       ├── clean_playing_eleven.csv
+│       ├── clean_teams.csv
 │       ├── delivery_dva.csv
-│       ├── player_match_dva.csv
-│       ├── ipl_*.csv
+│       ├── engineered_deliveries.csv
+│       ├── final_rankings.csv
+│       ├── ipl_all_player_scores.csv          # Frozen IPL-only player scores
+│       ├── ipl_final_rankings.csv             # Frozen IPL-only rankings
 │       ├── model_b_all_player_scores.csv
 │       ├── model_b_rankings.csv
-│       ├── recruitment_all_player_scores.csv
+│       ├── player_match_dva.csv
+│       ├── player_match_pressure.csv
+│       ├── player_performance_summary.csv
+│       ├── player_reliability_scores.csv
+│       ├── pressure_deliveries.csv
 │       ├── recruitment_all_players.csv
+│       ├── recruitment_all_player_scores.csv  # Combined recruitment player-role scores
 │       ├── recruitment_deliveries.parquet
-│       ├── recruitment_final_rankings.csv
+│       ├── recruitment_final_rankings.csv     # Combined recruitment Top 10 rankings
 │       ├── recruitment_matches.csv
 │       ├── recruitment_player_match_history.csv
 │       ├── recruitment_player_phase_breakdown.csv
-│       └── recruitment_pressure_overview.json
-│
+│       ├── recruitment_pressure_overview.json
+│       └── reliability_sensitivity_analysis.csv
 ├── reports/
-│   ├── recruitment_top10_reliable_batters.csv
-│   └── recruitment_top10_reliable_bowlers.csv
-│
+│   └──                                      # Analysis and validation reports
 ├── src/
-│   ├── dashboard_data.py
 │   ├── recruitment_pipeline.py
-│   ├── ipl_rankings_pipeline.py
-│   ├── prepare_dashboard_data.py
-│   ├── feature_engineering.py
-│   ├── pressure_identification.py
-│   ├── dva_engine.py
-│   └── reliability_engine.py
-│
-├── test_implementation.py
+│   └── prepare_dashboard_data.py
 ├── requirements.txt
 └── README.md
 ```
 
----
-
-## 8. Run the Dashboard Locally
-
-### Prerequisites
-- Python 3.10 or above.
-- Git.
-- Virtual environment (recommended).
-
-### Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/Shreeyaaaraj/supeRR-selector.git
-cd supeRR-selector
-```
-
-Create and activate a virtual environment:
-
-```bash
-python -m venv venv
-```
-
-Windows PowerShell:
-
-```powershell
-.\venv\Scripts\Activate.ps1
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Launch the dashboard:
-
-```bash
-streamlit run app/main.py
-```
-
-The application will open in your browser, usually at:
-
-`http://localhost:8501`
-
-### Run validation tests
-
-```bash
-python test_implementation.py
-```
+*The structure above highlights the principal application and processed-data files. Additional source files and generated outputs may be present in the repository.*
 
 ---
 
-## 9. Deployment
+## 6. Future Data Updates Workflow
 
-The application is deployed through Streamlit Community Cloud.
+When new IPL or Senior Men's T20I data becomes available:
 
-**GitHub Repository:**  
-https://github.com/Shreeyaaaraj/supeRR-selector
+1. Ingest the new raw match and delivery records into the appropriate source-data location.
+2. Validate player identifiers, match formats, team metadata, and delivery records.
+3. Ensure IPL and T20I records are classified explicitly. Do not treat other competition formats as T20I data.
+4. Apply the eligibility and player-exclusion rules consistently before calculating rankings.
+5. Execute the verified recruitment pipeline:
 
-**Main branch:** `main`
+   ```bash
+   python src/recruitment_pipeline.py
+   python src/prepare_dashboard_data.py
+   ```
 
-**Main application file:** `app/main.py`
+6. Review the generated recruitment rankings, player scores, qualification counts, and dashboard outputs.
+7. Test the dashboard locally before committing and pushing changes to GitHub.
 
-For future updates:
-
-1. Make and test the changes locally.
-2. Run the validation tests.
-3. Commit the changes to Git.
-4. Push to the `main` branch.
-5. Allow Streamlit Community Cloud to redeploy the application.
-6. Verify the live dashboard.
-
----
-
-## 10. Model Governance & Data Integrity
-
-The project maintains separate IPL reference and combined-format recruitment outputs.
-
-Key safeguards include:
-
-- Original Model A V1 results are preserved.
-- Model A scores are calculated from IPL data only.
-- T20I-only candidates receive N/A for Model A IPL scores.
-- Model B and Model C use explicitly verified competition flags.
-- Pakistani player IDs are excluded from candidate rankings.
-- Eligible non-Pakistani performances against Pakistan are retained.
-- Batting and bowling evaluations are maintained independently.
-- Automated implementation tests are included in the repository.
+The original IPL-only ranking outputs are retained as a frozen historical reference. New combined-format recruitment results are generated separately so that historical IPL-only results are not overwritten.
 
 ---
 
-## 11. Future Scope
-
-Potential future improvements include:
-
-- Additional international T20 competition coverage.
-- Enhanced player-role and all-rounder evaluation.
-- More advanced player comparison and squad-building tools.
-- Tactical matchup and opposition analysis.
-- Expanded scouting reports and recruitment insights.
-- Automated data ingestion for future seasons.
-
----
-
-## About the Project
-
-**SupeRR Selector — Season 2** is a cricket intelligence and recruitment analytics project focused on identifying players who consistently deliver when match pressure is highest.
-
-By combining IPL and Senior Men's T20I evidence while preserving an IPL-only reference model, the platform provides a structured approach to pressure-performance evaluation and player recruitment.
-
-**Built with Python, Streamlit, Pandas and Plotly.**
-
-**Repository:** https://github.com/Shreeyaaaraj/supeRR-selector
+*Developed for the SupeRR Selector Season 2 Competition under the approved Phase 3A Version 2.2 Master Specification.*
