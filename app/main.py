@@ -885,6 +885,23 @@ opt_sq_all_bat = f"All Batters (N={n_tot_bat})"
 opt_sq_bowl = f"Qualified Bowlers Only (N={n_qual_bowl})"
 opt_sq_all_bowl = f"All Bowlers (N={n_tot_bowl})"
 
+def reset_rank_bat_filters():
+    st.session_state.rank_bat_search_input = ""
+    st.session_state.rank_team_bat = "All Franchises"
+    st.session_state.rank_qual_bat = opt_qual_bat
+
+def reset_rank_bowl_filters():
+    st.session_state.rank_bowl_search_input = ""
+    st.session_state.rank_team_bowl = "All Franchises"
+    st.session_state.rank_qual_bowl = opt_qual_bowl
+
+def reset_player_search_filters():
+    st.session_state.search_query = ""
+    st.session_state.ps_search_box = ""
+    st.session_state.ps_role_box = "All Roles"
+    st.session_state.ps_franchise_box = "All Franchises"
+    st.session_state.ps_qual_box = "All Players"
+
 if "rankings_active_tab" not in st.session_state:
     st.session_state.rankings_active_tab = "Batters Leaderboard"
 
@@ -1618,11 +1635,7 @@ elif st.session_state.page == "Rankings":
         with col_ctl3:
             qual_filter_bat = st.selectbox("Qualification Status", [opt_qual_bat, opt_all_bat, "Non-Qualified Only"], key="rank_qual_bat")
         with col_ctl4:
-            if st.button("Clear", key="rank_clear_bat_btn", use_container_width=True):
-                st.session_state.rank_bat_search_input = ""
-                st.session_state.rank_team_bat = "All Franchises"
-                st.session_state.rank_qual_bat = opt_qual_bat
-                st.rerun()
+            st.button("Clear", key="rank_clear_bat_btn", on_click=reset_rank_bat_filters, use_container_width=True)
 
         # Filter dataset
         if qual_filter_bat.startswith("Qualified"):
@@ -2013,11 +2026,7 @@ elif st.session_state.page == "Rankings":
         with col_ctl_bw3:
             qual_filter_bowl = st.selectbox("Qualification Status", [opt_qual_bowl, opt_all_bowl, "Non-Qualified Only"], key="rank_qual_bowl")
         with col_ctl_bw4:
-            if st.button("Clear", key="rank_clear_bowl_btn", use_container_width=True):
-                st.session_state.rank_bowl_search_input = ""
-                st.session_state.rank_team_bowl = "All Franchises"
-                st.session_state.rank_qual_bowl = opt_qual_bowl
-                st.rerun()
+            st.button("Clear", key="rank_clear_bowl_btn", on_click=reset_rank_bowl_filters, use_container_width=True)
 
         # Filter dataset
         if qual_filter_bowl.startswith("Qualified"):
@@ -2440,13 +2449,7 @@ elif st.session_state.page == "Player Search":
     with col_s4:
         filter_qual = st.selectbox("Qualification Status", ["All Players", "Qualified Only", "Not Qualified Only"], key="ps_qual_box")
     with col_s5:
-        if st.button("Clear", key="ps_clear_all_btn", use_container_width=True):
-            st.session_state.search_query = ""
-            st.session_state.ps_search_box = ""
-            st.session_state.ps_role_box = "All Roles"
-            st.session_state.ps_franchise_box = "All Franchises"
-            st.session_state.ps_qual_box = "All Players"
-            st.rerun()
+        st.button("Clear", key="ps_clear_all_btn", on_click=reset_player_search_filters, use_container_width=True)
 
     df_filtered_search = df_players.copy()
     if search_term:
