@@ -1,0 +1,11 @@
+rank,player_id,player_name,country_or_team,competitions_coverage,pressure_exposure_legal_balls,qualifying_matches,successful_matches,raw_psr,exposure_weighted_psr,shrunk_exposure_weighted_psr,volatility_penalty_kappa,final_composite_score,baseline_economy_rate,pressure_economy_rate,clutch_econ_suppression,pressure_cumulative_dva,pressure_dva_per_ball,rank_k25,rank_k48,rank_k75,rank_k100,min_grid_rank,max_grid_rank,rank_shift,remains_top10_all_k
+1,2490,Mohammad Nawaz,Pakistan,13 Comps (T20I),115,12,12,1.0,1.0,0.8958,0.757,0.6781,7.39,5.06,2.33,76.3833,0.6642,1,1,1,1,1,1,0,True
+2,4926,Shadab Khan,Pakistan,13 Comps (T20I),104,10,10,1.0,1.0,0.8883,0.7555,0.6711,8.23,5.31,2.93,67.26,0.6467,2,2,2,3,2,3,1,True
+3,5979,Abrar Ahmed,Pakistan,15 Comps (T20I),136,14,13,0.9286,0.9528,0.8728,0.7602,0.6635,7.22,4.06,3.16,108.51,0.7979,4,3,3,2,2,4,2,True
+4,4823,Washington Sundar,"Gujarat Titans, India, Sunrisers Hyderabad","20 Comps (T20, T20I)",74,6,6,1.0,1.0,0.8608,0.7633,0.657,8.28,6.16,2.12,34.1333,0.4613,3,4,4,4,3,4,1,True
+5,2933,Jasprit Bumrah,"India, Mumbai Indians","13 Comps (T20, T20I)",204,25,21,0.84,0.8723,0.8292,0.7514,0.6231,7.25,6.65,0.6,107.1517,0.5253,8,5,5,5,5,8,3,True
+6,1813,Deepak Chahar,"Chennai Super Kings, India, Mumbai Indians","8 Comps (T20, T20I)",87,9,8,0.8889,0.9178,0.8212,0.7579,0.6224,9.02,9.31,-0.29,-1.7017,-0.0196,5,6,8,8,5,8,3,True
+7,781,Sunil Narine,Kolkata Knight Riders,5 Comps (T20),128,10,9,0.9,0.8911,0.8243,0.7536,0.6212,6.94,5.86,1.08,85.9317,0.6713,6,7,6,7,6,7,1,True
+8,4692,Lockie Ferguson,"Gujarat Titans, Kolkata Knight Riders, New Zealand, Punjab Kings, Royal Challengers Bengaluru","17 Comps (T20, T20I)",162,18,15,0.8333,0.8649,0.8149,0.7564,0.6164,9.17,7.07,2.1,69.2333,0.4274,11,8,7,6,6,11,5,False
+9,29888,Harshit Rana,"India, Kolkata Knight Riders","13 Comps (T20, T20I)",126,15,13,0.8667,0.877,0.8133,0.7549,0.614,9.89,7.57,2.32,55.4383,0.44,10,9,9,9,9,10,1,True
+10,5939,Cameron Green,"Australia, Kolkata Knight Riders, Mumbai Indians, Royal Challengers Bengaluru","12 Comps (T20, T20I)",79,8,7,0.875,0.9104,0.8105,0.7542,0.6113,9.79,7.14,2.65,38.14,0.4828,7,10,11,14,7,14,7,False
